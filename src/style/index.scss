@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,800|Nunito+Sans:300,400,600,700,800&display=swap');
+@import './variables.scss';
+
+:root {
+  --color-page-background: #{$color-gray-dark};
+  --color-text: #{$color-black};
+  --color-content-background: #{$color-white};
+}
+
+.dark {
+  --color-page-background: #{$color-black};
+  --color-text: #{$color-white};
+}
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-m;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
