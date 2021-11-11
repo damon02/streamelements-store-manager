@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "[handlebars]": {
+    "editor.formatOnSave": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}
