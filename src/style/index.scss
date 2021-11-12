@@ -1,18 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,800|Nunito+Sans:300,400,600,700,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:300,400,600,700,800|Nunito+Sans:300,400,600,700,800&display=swap');
 @import './variables.scss';
 
-:root {
-  --color-page-background: #{$color-gray-dark};
-  --color-text: #{$color-black};
-  --color-content-background: #{$color-white};
-}
-
-.dark {
-  --color-page-background: #{$color-black};
-  --color-text: #{$color-white};
-}
-
-body {
+body,
+#root,
+html {
   margin: 0;
   font-family: $font-family;
   font-weight: $font-weight-normal;
@@ -20,8 +11,121 @@ body {
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  position: absolute;
+  padding: env(safe-area-inset-top) 0 0;
 }
 
 * {
   box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family-titles;
+  font-weight: $font-weight-bold;
+  margin-top: unset;
+}
+
+input:not([type]),
+input[type='text'],
+input[type='password'],
+input[type='email'],
+textarea,
+input[type='checkbox'] {
+  padding: 10px;
+  font-size: $font-size-m;
+  font-family: $font-family;
+  max-width: 350px;
+  width: 100%;
+  border: 1px solid $color-gray;
+  border-radius: 4px;
+  background-color: $color-background-alt;
+  color: $color-primary;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: $font-weight-normal;
+
+  &:disabled {
+    border-color: $color-light-gray;
+    color: $color-gray;
+  }
+
+  &:focus {
+    outline: 2px solid $color-primary;
+  }
+}
+
+button {
+  padding: 10px 20px;
+  min-width: 150px;
+  border: none;
+  font-family: $font-family;
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: #fff;
+
+  &:hover {
+    background-color: var(--color-primary-light);
+    cursor: pointer;
+  }
+}
+
+.bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.info-box {
+  max-width: 350px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  .header,
+  .footer {
+    padding: 10px 15px;
+    background-color: var(--color-information);
+    color: #fff;
+
+    span {
+      font-weight: var(--font-weight-bold);
+    }
+
+    i {
+      margin-right: 8px;
+    }
+  }
+
+  .content {
+    padding: 10px 15px;
+    background-color: var(--color-information-dark);
+    color: #fff;
+    p {
+      margin-top: unset;
+
+      &:last-of-type {
+        margin-bottom: unset;
+      }
+    }
+  }
+
+  &.warning {
+    .header,
+    .footer {
+      background-color: var(--color-warning);
+      color: var(--color-text-dark);
+    }
+
+    .content {
+      background-color: var(--color-warning-light);
+      color: var(--color-text-dark);
+    }
+  }
 }

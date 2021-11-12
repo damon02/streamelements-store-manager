@@ -1,15 +1,38 @@
 $color-secondary: #000;
-$color-red: #ff0000;
-
-$color-primary: $color-red;
+$color-light-purple: #9a64ff;
+$color-purple: #6441a5;
+$color-red: #a54141;
+$color-green: #41a541;
+$color-light-blue: #6264cf;
+$color-blue: #4143a5;
+$color-light-orange: #ecbc6e;
+$color-orange: #e8a61a;
 
 $color-black: #000000;
 $color-white: #ffffff;
-$color-gray-light: rgba($color-white, 0.15);
-$color-gray-dark: rgba($color-black, 0.15);
+$color-light-gray: rgba($color-white, 0.15);
+$color-gray: rgba($color-black, 0.25);
+$color-dark-gray: rgba($color-black, 0.15);
 
-$font-family: 'Source Sans Pro', sans-serif;
-$font-family-titles: 'Nunito Sans', 'Roboto' 'Ubuntu', sans-serif;
+$color-primary: $color-light-purple;
+$color-primary-dark: $color-purple;
+$color-primary-light: lighten($color-purple, 10);
+
+$color-information: $color-light-blue;
+$color-information-dark: $color-blue;
+$color-information-light: lighten($color-blue, 10);
+
+$color-warning: $color-orange;
+$color-warning-dark: darken($color-orange, 10);
+$color-warning-light: lighten($color-orange, 10);
+
+$color-background: #121212;
+$color-background-alt: #282a36;
+$color-text: #c4c4c4;
+$color-text-dark: #000000;
+
+$font-family: 'Inter', sans-serif;
+$font-family-titles: 'Nunito Sans', 'Roboto', 'Ubuntu', sans-serif;
 
 $font-weight-normal: 400;
 $font-weight-bold: 700;
@@ -19,3 +42,24 @@ $font-size-s: 12px;
 $font-size-m: 13px;
 $font-size-l: 16px;
 $font-size-xl: 24px;
+
+:root {
+  --color-background: #{$color-background};
+  --color-background-alt: #{$color-background-alt};
+  --color-primary: #{$color-primary};
+  --color-primary-dark: #{$color-primary-dark};
+  --color-primary-light: #{$color-primary-light};
+  --color-information: #{$color-information};
+  --color-information-dark: #{$color-information-dark};
+  --color-information-light: #{$color-information-light};
+  --color-warning: #{$color-warning};
+  --color-warning-dark: #{$color-warning-dark};
+  --color-warning-light: #{$color-warning-light};
+  --color-text: #{$color-text};
+  --color-text-dark: #{$color-text-dark};
+  --color-content-background: #{$color-white};
+
+  --font-family: #{$font-family};
+  --font-weight: #{$font-weight-normal};
+  --font-weight-bold: #{$font-weight-bold};
+}
