@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
 
+export type TableSortType =
+  | 'dateCreated'
+  | 'dateUpdated'
+  | 'soundName'
+  | 'name'
+  | 'volume'
+  | 'cost'
+  | 'enabled'
+  | 'subsOnly'
+
 namespace StreamElements {
   type OAuth2Scopes =
     | 'tips:read'
@@ -87,6 +97,49 @@ namespace StreamElements {
       _id?: string
     }[]
     verified?: boolean
+    _id: string
+  }
+
+  interface ChannelItem {
+    alert?: {
+      graphics?: {
+        duration?: number
+        type?: string
+      }
+      audio?: {
+        volume?: number // FLOAT
+        src?: string | null
+      }
+      enabled?: boolean
+    }
+    allowMessages?: boolean
+    bot?: {
+      enabled?: boolean
+      identifier?: string
+      sendResponse?: boolean
+    }
+    channel?: string
+    cooldown?: {
+      category?: number
+      global?: number
+      user?: number
+    }
+    cost: number
+    createdAt: string
+    description: string
+    enabled: boolean
+    featured: boolean
+    name: string
+    order: number
+    public: boolean
+    quantity: {
+      total: number
+    }
+    sources: string[]
+    subscriberOnly: boolean
+    type: string // "perk", "effect"
+    updatedAt: string
+    userInput: string[]
     _id: string
   }
 }

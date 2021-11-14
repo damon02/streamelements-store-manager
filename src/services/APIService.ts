@@ -4,7 +4,7 @@ import { objectToQueryString } from '../utils/general'
 export interface APIServiceProps {
   getMeDetails: () => Promise<StreamElements.Channel>
   getCurrentUserChannel: () => Promise<StreamElements.Channel>
-  getChannelItems: (channelId: string) => Promise<any>
+  getChannelItems: (channelId: string) => Promise<StreamElements.ChannelItem[]>
 }
 
 const APIService = (token: string): APIServiceProps => ({
@@ -28,7 +28,11 @@ const APIService = (token: string): APIServiceProps => ({
 
     return fetchAPI(`${BASE_URL}/v2/channels/me`, options)
   },
-  getChannelItems: (channelId: string, limit: number = 25, offset?: number): Promise<any> => {
+  getChannelItems: (
+    channelId: string,
+    limit: number = 25,
+    offset?: number
+  ): Promise<StreamElements.ChannelItem[]> => {
     const options: RequestInit = {
       method: 'GET',
       headers: {

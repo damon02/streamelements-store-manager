@@ -35,7 +35,7 @@ const LoginPage = () => {
               right, then your username and lastly Channel Settings.
             </p>
             <p>
-              Then toggle the "Show secrets" button, and copy the JWT token in full inside the input
+              Then toggle the "Show secrets" button, and copy the JWT in full inside the input
               field.
             </p>
           </div>
@@ -48,7 +48,7 @@ const LoginPage = () => {
             type="password"
             value={jwt}
             onChange={e => setJWT(e.target.value)}
-            placeholder="JWT Token"
+            placeholder="JWT (JSON web token)"
           />
           <button type="submit">Login</button>
         </form>
