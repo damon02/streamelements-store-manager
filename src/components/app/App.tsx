@@ -5,13 +5,9 @@ import Home from '../../pages/home/Home'
 import LoginPage from '../../pages/login/LoginPage'
 import ProtectedRoute from '../router/protectedRoute/ProtectedRoute'
 
-import { useAuth } from '../../hooks/useAuth'
-
 import './App.scss'
 
 function App() {
-  const { APIService, token, setToken } = useAuth()
-
   return (
     <div className="App">
       <Routes>
@@ -19,15 +15,11 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Home APIService={APIService} />
+              <Home />
             </ProtectedRoute>
           }
         />
-        <Route
-          index={false}
-          path="login"
-          element={<LoginPage token={token} setToken={setToken} />}
-        />
+        <Route index={false} path="login" element={<LoginPage />} />
       </Routes>
     </div>
   )

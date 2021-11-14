@@ -1,0 +1,86 @@
+.header-app {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  height: 60px;
+  width: 100%;
+  background-color: var(--color-background-alt);
+
+  .title {
+    h1 {
+      margin-bottom: 0px;
+      font-size: var(--font-size-l);
+      color: var(--color-text);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  .buttons {
+    .button-user {
+      display: flex;
+      align-items: center;
+      border-radius: var(--border-radius-base);
+      padding: 0.5rem;
+
+      .name {
+        font-size: var(--font-size-l);
+        margin-left: 10px;
+      }
+
+      .triangle {
+        margin-left: 6px;
+      }
+
+      .user-image {
+        height: 38px;
+        width: 38px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        border-radius: 50%;
+      }
+
+      &:hover,
+      &.active {
+        background-color: var(--color-background-alt-light);
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .user-menu {
+    position: absolute;
+    min-width: 200px;
+    top: 66px;
+    right: 20px;
+    transition: all 0.5ms ease-in-out;
+    background-color: var(--color-background-alt-light);
+    padding: 0.5rem;
+    border-radius: var(--border-radius-base);
+    color: #fff;
+
+    .menu-title {
+      font-weight: var(--font-weight);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    > button {
+      background-color: unset;
+      font-weight: 600;
+      text-align: left;
+      width: 100%;
+      margin: 0px;
+
+      &:hover {
+        background-color: var(--color-background-alt-lighter);
+      }
+
+      &.danger {
+        color: var(--color-red);
+      }
+    }
+  }
+}

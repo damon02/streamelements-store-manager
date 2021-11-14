@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import pjson from '../../../package.json'
+import { useAuth } from '../../hooks/useAuth'
 
 import './LoginPage.scss'
 
-interface IProps {
-  token: string | null
-  setToken: (token: string) => void
-}
-
-const LoginPage = (props: IProps) => {
+const LoginPage = () => {
+  const { token, setToken } = useAuth()
   const navigate = useNavigate()
 
-  const { token, setToken } = props
   const [jwt, setJWT] = useState<string>('')
 
   useEffect(() => {
@@ -25,7 +21,7 @@ const LoginPage = (props: IProps) => {
 
   return (
     <div className="login-page">
-      <h1 className="page-title">ONSCREEN sounds editor</h1>
+      <h1 className="page-title">StreamElements Sounds editor</h1>
       <div className="login-block">
         <div className="info-box warning">
           <div className="header">

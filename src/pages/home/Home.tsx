@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect } from 'react'
-import { APIServiceProps } from '../../services/APIService'
 
-interface IProps {
-  APIService: APIServiceProps | null
-}
+import Header from '../../components/header/Header'
 
-const Home = (props: IProps) => {
-  const { APIService } = props
+import { useAuth } from '../../hooks/useAuth'
+
+import './Home.scss'
+
+const Home = () => {
+  const { user, setUser, APIService, setToken } = useAuth()
   const memoizedFetchUserDetails = useCallback(fetchUserDetails, [APIService])
 
   useEffect(() => {
@@ -16,6 +17,7 @@ const Home = (props: IProps) => {
 
   return (
     <div className="home">
+      <Header user={user} logout={() => setToken(null)} />
       Home
       <i />
     </div>
@@ -24,15 +26,8 @@ const Home = (props: IProps) => {
   async function fetchUserDetails() {
     if (APIService) {
       try {
-        const users = await APIService.getCurrentUserChannel()
-        const onscreenID = users.channels?.find(u => u.username === 'onscreen')?._id
-
-        if (onscreenID) {
-          const items = await APIService?.getChannelItems(onscreenID)
-          console.log(items)
-        } else {
-          console.error('no onscreen id :(')
-        }
+        const channel = await APIService?.getMeDetails()
+        setUser(channel)
       } catch (error) {
         console.error(error)
       }

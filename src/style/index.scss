@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Inter:300,400,600,700,800|Nunito+Sans:300,400,600,700,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800&display=swap');
 @import './variables.scss';
 
 body,
@@ -29,7 +29,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: $font-family-titles;
+  font-family: $font-family;
   font-weight: $font-weight-bold;
   margin-top: unset;
 }
