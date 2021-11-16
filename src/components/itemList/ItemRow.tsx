@@ -13,6 +13,7 @@ const ItemRow = ({ item }: IProps) => {
   const wavesurferRef = React.useRef<any>(null)
 
   const [playing, setPlaying] = React.useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [playPosition, setPlayPosition] = React.useState(0)
   const handleWSMount = React.useCallback(
     waveSurfer => {
@@ -53,7 +54,7 @@ const ItemRow = ({ item }: IProps) => {
     if (wavesurferRef.current) {
       wavesurferRef.current.setVolume(item.alert?.audio?.volume)
     }
-  }, [wavesurferRef.current])
+  }, [item.alert?.audio?.volume])
 
   return (
     <tr className="item" key={item._id}>
