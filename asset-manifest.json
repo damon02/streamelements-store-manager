@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/streamelements-store-manager/static/css/main.d2f97cdc.chunk.css",
-    "main.js": "/streamelements-store-manager/static/js/main.ffea4dbe.chunk.js",
-    "main.js.map": "/streamelements-store-manager/static/js/main.ffea4dbe.chunk.js.map",
+    "main.js": "/streamelements-store-manager/static/js/main.dd5676be.chunk.js",
+    "main.js.map": "/streamelements-store-manager/static/js/main.dd5676be.chunk.js.map",
     "runtime-main.js": "/streamelements-store-manager/static/js/runtime-main.a7057cae.js",
     "runtime-main.js.map": "/streamelements-store-manager/static/js/runtime-main.a7057cae.js.map",
-    "static/js/2.ed75d4a8.chunk.js": "/streamelements-store-manager/static/js/2.ed75d4a8.chunk.js",
-    "static/js/2.ed75d4a8.chunk.js.map": "/streamelements-store-manager/static/js/2.ed75d4a8.chunk.js.map",
+    "static/js/2.1cb257d7.chunk.js": "/streamelements-store-manager/static/js/2.1cb257d7.chunk.js",
+    "static/js/2.1cb257d7.chunk.js.map": "/streamelements-store-manager/static/js/2.1cb257d7.chunk.js.map",
     "static/js/3.d29e03c9.chunk.js": "/streamelements-store-manager/static/js/3.d29e03c9.chunk.js",
     "static/js/3.d29e03c9.chunk.js.map": "/streamelements-store-manager/static/js/3.d29e03c9.chunk.js.map",
     "index.html": "/streamelements-store-manager/index.html",
     "static/css/main.d2f97cdc.chunk.css.map": "/streamelements-store-manager/static/css/main.d2f97cdc.chunk.css.map",
-    "static/js/2.ed75d4a8.chunk.js.LICENSE.txt": "/streamelements-store-manager/static/js/2.ed75d4a8.chunk.js.LICENSE.txt"
+    "static/js/2.1cb257d7.chunk.js.LICENSE.txt": "/streamelements-store-manager/static/js/2.1cb257d7.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a7057cae.js",
-    "static/js/2.ed75d4a8.chunk.js",
+    "static/js/2.1cb257d7.chunk.js",
     "static/css/main.d2f97cdc.chunk.css",
-    "static/js/main.ffea4dbe.chunk.js"
+    "static/js/main.dd5676be.chunk.js"
   ]
 }
