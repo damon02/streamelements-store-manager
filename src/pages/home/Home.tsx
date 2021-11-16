@@ -4,14 +4,14 @@ import Header from '../../components/header/Header'
 import ItemList from '../../components/itemList/ItemList'
 import FilterManager from '../../components/filterManager/FilterManager'
 
-import { StreamElements } from '../../@types/types'
+import { EditedChannelItem } from '../../@types/types'
 import { useAuth } from '../../hooks/useAuth'
 
 import './Home.scss'
 
 const Home = () => {
   const { user, setUser, APIService, setToken } = useAuth()
-  const [items, setItems] = useState<StreamElements.ChannelItem[]>([])
+  const [items, setItems] = useState<EditedChannelItem[]>([])
 
   const memoizedFetchUserDetails = useCallback(fetchUserDetails, [APIService, setUser])
   const memoizedFetchChannelItems = useCallback(fetchUserStoreItems, [APIService])
@@ -33,11 +33,17 @@ const Home = () => {
     <div className="home">
       <Header user={user} logout={() => setToken(null)} />
       <div className="content">
-        <FilterManager items={items}>
+        <FilterManager items={items} setItems={setItems}>
           {(FiltersComponent, processedItems, sort, setSort) => (
             <>
               {FiltersComponent}
-              <ItemList items={processedItems} sort={sort} setSort={setSort} />
+              <ItemList
+                items={processedItems}
+                setItems={setItems}
+                allItems={items}
+                sort={sort}
+                setSort={setSort}
+              />
             </>
           )}
         </FilterManager>

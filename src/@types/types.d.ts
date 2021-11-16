@@ -10,6 +10,7 @@ export type TableSortType =
   | 'cost'
   | 'enabled'
   | 'subsOnly'
+  | 'duration'
 
 namespace StreamElements {
   type OAuth2Scopes =
@@ -142,4 +143,8 @@ namespace StreamElements {
     userInput: string[]
     _id: string
   }
+}
+
+interface EditedChannelItem extends StreamElements.ChannelItem {
+  duration?: number
 }

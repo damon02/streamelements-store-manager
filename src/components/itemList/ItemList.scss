@@ -17,7 +17,8 @@
       position: sticky;
       top: 60px;
       background-color: var(--color-background);
-      z-index: 2;
+      z-index: 5;
+      cursor: default;
 
       i {
         margin-left: 4px;
@@ -27,6 +28,10 @@
           opacity: 0.2;
           color: #fff;
         }
+      }
+
+      &.clickable {
+        cursor: pointer;
       }
     }
   }

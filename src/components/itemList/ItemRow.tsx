@@ -2,17 +2,19 @@ import * as React from 'react'
 import { WaveSurfer, WaveForm } from 'wavesurfer-react'
 import { format } from 'date-fns'
 
-import { StreamElements } from '../../@types/types'
+import { EditedChannelItem, StreamElements } from '../../@types/types'
 
 interface IProps {
   item: StreamElements.ChannelItem
+  setItem: (item: EditedChannelItem) => void
 }
 
-const ItemRow = ({ item }: IProps) => {
+const ItemRow = ({ item, setItem }: IProps) => {
   const id = `waveform-${item._id}`
   const wavesurferRef = React.useRef<any>(null)
 
   const [playing, setPlaying] = React.useState(false)
+  const [duration, setDuration] = React.useState<number>()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [playPosition, setPlayPosition] = React.useState(0)
   const handleWSMount = React.useCallback(
@@ -56,6 +58,10 @@ const ItemRow = ({ item }: IProps) => {
     }
   }, [item.alert?.audio?.volume])
 
+  React.useEffect(() => {
+    setTimeout(() => getDuration(), 5000)
+  }, [])
+
   return (
     <tr className="item" key={item._id}>
       <td className="checkbox" />
@@ -94,6 +100,9 @@ const ItemRow = ({ item }: IProps) => {
       </td>
       <td className="cost center">{item.cost}</td>
       <td className="volume center">{Math.round((item.alert?.audio?.volume || 0) * 100)}%</td>
+      <td className="duration center">
+        {duration ? `${Math.round(duration * 10) / 10}s` : <i className="fas fa-spin fa-spinner" />}
+      </td>
       <td className="waveform">
         <WaveSurfer onMount={handleWSMount} ref={wavesurferRef}>
           <WaveForm
@@ -135,6 +144,13 @@ const ItemRow = ({ item }: IProps) => {
   //     console.error(error)
   //   }
   // }
+
+  function getDuration() {
+    const dur = wavesurferRef.current.getDuration()
+    setDuration(dur)
+
+    // setItem({ ...item, duration: dur })
+  }
 }
 
 export default ItemRow

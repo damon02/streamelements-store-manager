@@ -1,17 +1,20 @@
 import * as React from 'react'
+import { cloneDeep } from 'lodash'
 
 import ItemRow from './ItemRow'
 
-import { StreamElements, TableSortType } from '../../@types/types'
+import { EditedChannelItem, TableSortType } from '../../@types/types'
 import './ItemList.scss'
 
 interface IProps {
-  items: StreamElements.ChannelItem[]
+  allItems: EditedChannelItem[]
+  items: EditedChannelItem[]
+  setItems: (items: EditedChannelItem[]) => void
   sort: { sort: TableSortType; order: 'asc' | 'desc' }
   setSort: (sort: { sort: TableSortType; order: 'asc' | 'desc' }) => void
 }
 
-const ItemList = ({ items, sort, setSort }: IProps) => {
+const ItemList = ({ allItems, items, setItems, sort, setSort }: IProps) => {
   return (
     <table className="item-list">
       <thead>
@@ -44,6 +47,7 @@ const ItemList = ({ items, sort, setSort }: IProps) => {
               }`}
             />
           </th>
+          <th className="duration center">Duration</th>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <th className="waveform" />
           <th className="check center enabled clickable" onClick={() => handleSort('enabled')}>
@@ -74,7 +78,7 @@ const ItemList = ({ items, sort, setSort }: IProps) => {
       </thead>
       <tbody>
         {items.map(i => (
-          <ItemRow item={i} key={i._id} />
+          <ItemRow item={i} key={i._id} setItem={handleSetItem} />
         ))}
       </tbody>
     </table>
@@ -85,6 +89,17 @@ const ItemList = ({ items, sort, setSort }: IProps) => {
       sort: key,
       order: sort.sort === key ? (sort.order === 'asc' ? 'desc' : 'asc') : 'asc'
     })
+  }
+
+  function handleSetItem(item: EditedChannelItem) {
+    const index = allItems.findIndex(x => x._id === item._id)
+
+    if (index) {
+      const newx = cloneDeep(allItems)
+      newx[index] = item
+
+      setItems(newx)
+    }
   }
 }
 

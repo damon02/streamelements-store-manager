@@ -8,11 +8,15 @@ interface IProps {
   minVolume: number | undefined
   setMinVolume: (minVolume: number | undefined) => void
   maxVolume: number | undefined
-  setMaxVolume: (minVolume: number | undefined) => void
+  setMaxVolume: (maxVolume: number | undefined) => void
   minCost: number | undefined
-  setMinCost: (minVolume: number | undefined) => void
+  setMinCost: (minCost: number | undefined) => void
   maxCost: number | undefined
-  setMaxCost: (minVolume: number | undefined) => void
+  setMaxCost: (maxCost: number | undefined) => void
+  minSeconds: number | undefined
+  setMinSeconds: (minSeconda: number | undefined) => void
+  maxSeconds: number | undefined
+  setMaxSeconds: (maxSeconds: number | undefined) => void
 }
 
 const FilterHeader = ({
@@ -25,7 +29,11 @@ const FilterHeader = ({
   minCost,
   setMinCost,
   maxCost,
-  setMaxCost
+  setMaxCost,
+  minSeconds,
+  setMinSeconds,
+  maxSeconds,
+  setMaxSeconds
 }: IProps) => (
   <div className="filter-header">
     <div className="filter-item">
@@ -35,29 +43,6 @@ const FilterHeader = ({
         value={query}
         onChange={e => setQuery(e.target.value)}
       />
-    </div>
-    <div className="filter-item">
-      <h3>Volume</h3>
-      <div className="flex">
-        <input
-          className={(minVolume || 0) < (maxVolume || 0) ? 'warn' : ''}
-          type="number"
-          value={minVolume}
-          placeholder="Min"
-          min={0}
-          max={99}
-          onChange={e => setMinVolume(parseInt(e.target.value, 10))}
-        />
-        <input
-          className={(minVolume || 0) < (maxVolume || 0) ? 'warn' : ''}
-          type="number"
-          value={maxVolume}
-          placeholder="Max"
-          min={1}
-          max={100}
-          onChange={e => setMaxVolume(parseInt(e.target.value, 10))}
-        />
-      </div>
     </div>
     <div className="filter-item">
       <h3>Cost</h3>
@@ -79,6 +64,52 @@ const FilterHeader = ({
           min={1}
           max={1000000000}
           onChange={e => setMaxCost(parseInt(e.target.value, 10))}
+        />
+      </div>
+    </div>
+    <div className="filter-item">
+      <h3>Volume</h3>
+      <div className="flex">
+        <input
+          className={(minVolume || 0) < (maxVolume || 0) ? 'warn' : ''}
+          type="number"
+          value={minVolume || undefined}
+          placeholder="Min"
+          min={0}
+          max={99}
+          onChange={e => setMinVolume(parseInt(e.target.value, 10))}
+        />
+        <input
+          className={(minVolume || 0) < (maxVolume || 0) ? 'warn' : ''}
+          type="number"
+          value={maxVolume}
+          placeholder="Max"
+          min={1}
+          max={100}
+          onChange={e => setMaxVolume(parseInt(e.target.value, 10))}
+        />
+      </div>
+    </div>
+    <div className="filter-item">
+      <h3>Duration</h3>
+      <div className="flex">
+        <input
+          className={(minSeconds || 0) < (maxSeconds || 0) ? 'warn' : ''}
+          type="number"
+          value={minSeconds}
+          placeholder="Min"
+          min={0}
+          max={9999999999}
+          onChange={e => setMinSeconds(parseInt(e.target.value, 10))}
+        />
+        <input
+          className={(minSeconds || 0) < (maxSeconds || 0) ? 'warn' : ''}
+          type="number"
+          value={maxSeconds}
+          placeholder="Max"
+          min={1}
+          max={1000000000}
+          onChange={e => setMaxSeconds(parseInt(e.target.value, 10))}
         />
       </div>
     </div>
