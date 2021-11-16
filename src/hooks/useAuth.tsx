@@ -1,6 +1,7 @@
 import React from 'react'
 import APIService, { APIServiceProps } from '../services/APIService'
 import { useLocalStorage } from './useLocalStorage'
+import { StreamElements } from '../@types/types'
 
 interface AuthContextType {
   user?: StreamElements.Channel

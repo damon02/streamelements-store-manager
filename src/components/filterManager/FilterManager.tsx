@@ -19,6 +19,10 @@ const FilterManager = ({ items, children }: IProps) => {
 
   const [processedItems, setProcessedItems] = React.useState<StreamElements.ChannelItem[]>(items)
 
+  React.useEffect(() => {
+    setProcessedItems(items)
+  }, [items])
+
   return <>{children(processedItems, sort, setSort)}</>
 }
 

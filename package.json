@@ -14,6 +14,8 @@
     "react-scripts": "4.0.3",
     "react-spring": "9.3.0",
     "typescript": "4.4.4",
+    "wavesurfer-react": "2.0.11",
+    "wavesurfer.js": "4.6.0",
     "web-vitals": "1.1.2"
   },
   "devDependencies": {

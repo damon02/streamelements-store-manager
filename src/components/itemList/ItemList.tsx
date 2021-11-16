@@ -19,10 +19,12 @@ const ItemList = ({ items }: IProps) => {
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <th className="play" />
           <th className="sound-name">Sound name</th>
-          <th className="cost">Cost</th>
-          <th className="volume">Volume</th>
-          <th className="check enabled">Enabled</th>
-          <th className="check subs-only">Subs only</th>
+          <th className="cost center">Cost</th>
+          <th className="volume center">Volume</th>
+          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+          <th className="waveform" />
+          <th className="check center enabled">Enabled</th>
+          <th className="check center subs-only">Subs only</th>
         </tr>
       </thead>
       <tbody>

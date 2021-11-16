@@ -2,6 +2,7 @@ import * as React from 'react'
 import { animated, useSpring } from 'react-spring'
 import { easeQuadInOut } from 'd3-ease'
 
+import { StreamElements } from '../../@types/types'
 import './Header.scss'
 
 interface IProps {

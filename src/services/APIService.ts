@@ -1,5 +1,6 @@
 import { BASE_URL } from '../utils/constants'
 import { objectToQueryString } from '../utils/general'
+import { StreamElements } from '../@types/types'
 
 export interface APIServiceProps {
   getMeDetails: () => Promise<StreamElements.Channel>
