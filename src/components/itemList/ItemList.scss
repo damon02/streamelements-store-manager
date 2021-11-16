@@ -18,6 +18,16 @@
       top: 60px;
       background-color: var(--color-background);
       z-index: 2;
+
+      i {
+        margin-left: 4px;
+        color: var(--color-primary-light);
+
+        &.unset {
+          opacity: 0.2;
+          color: #fff;
+        }
+      }
     }
   }
 
@@ -51,9 +61,33 @@
       min-width: 100px;
     }
 
-    td {
+    td,
+    th {
       &.center {
         text-align: center;
+      }
+
+      &.sound-name {
+        width: 300px;
+        max-width: 300px;
+        .name-split {
+          display: flex;
+          flex-direction: column;
+          width: 300px;
+          max-width: 300px;
+
+          .name {
+            font-weight: var(--font-weight-bold);
+          }
+
+          .description {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight);
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
       }
     }
   }

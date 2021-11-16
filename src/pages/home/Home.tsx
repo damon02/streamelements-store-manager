@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import Header from '../../components/header/Header'
 import ItemList from '../../components/itemList/ItemList'
+import FilterManager from '../../components/filterManager/FilterManager'
 
 import { StreamElements } from '../../@types/types'
 import { useAuth } from '../../hooks/useAuth'
 
 import './Home.scss'
-import FilterManager from '../../components/filterManager/FilterManager'
 
 const Home = () => {
   const { user, setUser, APIService, setToken } = useAuth()
@@ -34,9 +34,10 @@ const Home = () => {
       <Header user={user} logout={() => setToken(null)} />
       <div className="content">
         <FilterManager items={items}>
-          {processedItems => (
+          {(FiltersComponent, processedItems, sort, setSort) => (
             <>
-              <ItemList items={processedItems} />
+              {FiltersComponent}
+              <ItemList items={processedItems} sort={sort} setSort={setSort} />
             </>
           )}
         </FilterManager>

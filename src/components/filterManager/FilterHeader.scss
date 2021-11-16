@@ -1,0 +1,33 @@
+.filter-header {
+  display: flex;
+  align-items: center;
+
+  input[type='number'] {
+    &:first-of-type {
+      margin-right: 4px;
+    }
+    &:last-of-type {
+      margin-left: 4px;
+    }
+  }
+
+  .filter-item {
+    margin-right: 12px;
+    min-width: 320px;
+
+    &:last-of-type {
+      margin-right: unset;
+    }
+
+    h3 {
+      font-size: --var(--font-size-s);
+      margin-bottom: unset;
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}

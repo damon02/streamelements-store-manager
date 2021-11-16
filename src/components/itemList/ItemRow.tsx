@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { WaveSurfer, WaveForm } from 'wavesurfer-react'
+import { format } from 'date-fns'
 
 import { StreamElements } from '../../@types/types'
 
@@ -82,7 +83,14 @@ const ItemRow = ({ item }: IProps) => {
           <i className={playing ? 'fas fa-pause' : 'fas fa-play'} />
         </div>
       </td>
-      <td className="sound-name">{item.bot?.identifier}</td>
+      <td className="sound-name">
+        <div className="name-split">
+          <div className="name">{item.bot?.identifier}</div>
+          <div className="description">
+            {item.name} - {item.description}
+          </div>
+        </div>
+      </td>
       <td className="cost center">{item.cost}</td>
       <td className="volume center">{Math.round((item.alert?.audio?.volume || 0) * 100)}%</td>
       <td className="waveform">
@@ -107,6 +115,9 @@ const ItemRow = ({ item }: IProps) => {
       </td>
       <td className="check center subs-only">
         <i className={item.subscriberOnly ? 'fas fa-check' : 'fas fa-times'} />
+      </td>
+      <td className="dateCreated center">
+        {format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')}
       </td>
     </tr>
   )
