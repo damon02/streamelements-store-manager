@@ -72,6 +72,23 @@
         text-align: center;
       }
 
+      &.play {
+        min-width: 40px;
+        .play-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 34px;
+          width: 40px;
+          max-width: 48px;
+          border-radius: var(--border-radius-base);
+
+          &:hover {
+            background-color: var(--color-background-alt-lighter);
+          }
+        }
+      }
+
       &.sound-name {
         width: 300px;
         max-width: 300px;
@@ -93,6 +110,84 @@
             text-overflow: ellipsis;
           }
         }
+      }
+    }
+  }
+}
+
+.list-wrapper {
+  margin-bottom: 50px;
+}
+
+.page-controller-wrapper {
+  position: fixed;
+  bottom: 0px;
+  left: 2rem;
+  border-radius: var(--border-radius-base);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-top: 16px;
+
+  .filtered-warning {
+    background-color: var(--color-information-dark);
+    color: var(--color-white);
+    border-radius: 4px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 6px 12px;
+    font-size: var(--font-size-s);
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--color-information);
+    }
+  }
+
+  .page-controller {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--color-background-alt);
+
+    padding: 8px;
+    color: var(--color-white);
+
+    .buttons-pages {
+      display: flex;
+
+      button {
+        margin-right: 6px;
+
+        &:last-of-type {
+          margin-left: 0px;
+          margin-right: 0px;
+        }
+      }
+    }
+
+    .page-summary {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 16px;
+      margin-right: 16px;
+
+      .amount-per-page {
+        font-size: var(--font-size-s);
+        color: var(--color-text);
+      }
+    }
+
+    button.small {
+      min-width: unset;
+
+      i {
+        margin: 0px;
+      }
+
+      &.showAll:last-of-type {
+        margin-left: 16px;
       }
     }
   }

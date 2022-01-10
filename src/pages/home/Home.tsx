@@ -40,7 +40,7 @@ const Home = () => {
         <Header user={user} loading={loading} logout={() => setToken(null)} />
         <div className="content">
           <FilterManager items={items} setItems={setItems}>
-            {(FiltersComponent, processedItems, sort, setSort) => (
+            {(FiltersComponent, processedItems, sort, setSort, resetFilters) => (
               <>
                 {FiltersComponent}
                 <ItemList
@@ -49,6 +49,7 @@ const Home = () => {
                   allItems={items}
                   sort={sort}
                   setSort={setSort}
+                  resetFilters={resetFilters}
                 />
               </>
             )}
@@ -81,9 +82,18 @@ const Home = () => {
         setLoading(true)
         const channelItems = await APIService?.getChannelItems(channelId)
 
-        if (0 === 0) {
-          setItems(channelItems.slice(0, 25))
-        }
+        const filteredItems = channelItems.filter(i => i.alert?.audio?.src) as EditedChannelItem[]
+        const itemsWithDuration = await Promise.all(
+          filteredItems.map(async item => {
+            const duration = await determineSoundDuration(item.alert?.audio?.src || '')
+            return {
+              ...item,
+              duration: duration || undefined
+            }
+          })
+        )
+
+        setItems(itemsWithDuration)
       } catch (error) {
         console.error(error)
       } finally {
@@ -95,12 +105,9 @@ const Home = () => {
   function handleSetItem(item: StreamElements.ChannelItem) {
     const index = items.findIndex(x => x._id === item._id)
 
-    console.log(index)
-
     if (index) {
       const newArr = [...items]
       newArr[index] = item
-      console.log(newArr)
       setItems(newArr)
     } else {
       setItems([...items, item])
@@ -131,6 +138,21 @@ const Home = () => {
     } else {
       setFiles([...files, file])
     }
+  }
+
+  async function determineSoundDuration(url: string) {
+    if (url) {
+      const ctx = new AudioContext()
+
+      const response = await fetch(url, {
+        method: 'GET'
+      }).then(r => r.arrayBuffer())
+
+      const audioBuffer = await ctx.decodeAudioData(response, a => a)
+      return audioBuffer.duration
+    }
+
+    return undefined
   }
 }
 

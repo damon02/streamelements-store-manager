@@ -11,7 +11,8 @@ interface IProps {
     FiltersComponent: React.ReactNode,
     processedItems: EditedChannelItem[],
     sort: { sort: TableSortType; order: 'asc' | 'desc' },
-    setSort: (newSort: { sort: TableSortType; order: 'asc' | 'desc' }) => void
+    setSort: (newSort: { sort: TableSortType; order: 'asc' | 'desc' }) => void,
+    resetFilters: () => void
   ) => React.ReactNode
 }
 
@@ -60,7 +61,7 @@ const FilterManager = ({ items, setItems, children }: IProps) => {
     setMaxSeconds
   })
 
-  return <>{children(FiltersComponent, processedItems, sort, setSort)}</>
+  return <>{children(FiltersComponent, processedItems, sort, setSort, resetFilters)}</>
 
   function processFiltering(
     allItems: EditedChannelItem[],
@@ -94,11 +95,23 @@ const FilterManager = ({ items, setItems, children }: IProps) => {
         return 'alert.audio.volume'
       case 'dateCreated':
         return 'createdAt'
+      case 'duration':
+        return 'duration'
 
       default: {
         return sortKey
       }
     }
+  }
+
+  function resetFilters() {
+    setQuery('')
+    setMinVolume(undefined)
+    setMaxVolume(undefined)
+    setMinCost(undefined)
+    setMaxCost(undefined)
+    setMinSeconds(undefined)
+    setMaxSeconds(undefined)
   }
 }
 

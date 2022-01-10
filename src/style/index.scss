@@ -87,7 +87,7 @@ button {
   font-family: $font-family;
   border-radius: 4px;
   background-color: var(--color-primary);
-  color: #fff;
+  color: $color-white;
 
   i.icon {
     margin-right: 8px;
@@ -98,11 +98,21 @@ button {
     cursor: pointer;
   }
 
+  &:disabled {
+    background-color: var(--color-primary-dark);
+    color: $color-text;
+    cursor: not-allowed;
+  }
+
   &.secondary {
     background-color: var(--color-background-lighter);
 
     &:hover {
       background-color: var(--color-background-lightest);
+    }
+
+    &:disabled {
+      background-color: var(--color-background-light);
     }
   }
 }
