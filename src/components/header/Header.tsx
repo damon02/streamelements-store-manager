@@ -7,15 +7,16 @@ import './Header.scss'
 
 interface IProps {
   user?: StreamElements.Channel
+  loading: boolean
   logout: () => void
 }
 
-const Header = ({ user, logout }: IProps) => {
+const Header = ({ user, loading, logout }: IProps) => {
   const [showMenu, setShowMenu] = React.useState<boolean>(false)
 
   const username = user?.displayName
 
-  const animationProps = useSpring({
+  const menuAnimationProps = useSpring({
     opacity: showMenu ? 1 : 0,
     transform: showMenu
       ? 'translateY(0%) translateX(0%) scale(1)'
@@ -43,7 +44,7 @@ const Header = ({ user, logout }: IProps) => {
           </div>
         </div>
       </div>
-      <animated.div className="user-menu" style={{ ...animationProps }}>
+      <animated.div className="user-menu" style={{ ...menuAnimationProps }}>
         <button className="button-menu danger" type="button" onClick={() => logout()}>
           Log out
         </button>

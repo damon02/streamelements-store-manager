@@ -50,7 +50,19 @@ const LoginPage = () => {
             onChange={e => setJWT(e.target.value)}
             placeholder="JWT (JSON web token)"
           />
-          <button type="submit">Login</button>
+          <div className="buttons">
+            <button type="submit">Login</button>
+            <button
+              className="secondary"
+              type="button"
+              onClick={() =>
+                window.open('https://streamelements.com/dashboard/account/channels', '_blank')
+              }
+            >
+              <i className="icon fas fa-external-link-square-alt" />
+              StreamElements Channel Settings
+            </button>
+          </div>
         </form>
       </div>
       <div className="copy">

@@ -119,6 +119,7 @@ namespace StreamElements {
       identifier?: string
       sendResponse?: boolean
     }
+    categoryName?: string
     channel?: string
     cooldown?: {
       category?: number
@@ -141,6 +142,29 @@ namespace StreamElements {
     type: string // "perk", "effect"
     updatedAt: string
     userInput: string[]
+    _id: string
+  }
+
+  interface UploadResponse {
+    /**
+     * Total amount of items uploaded to StreamElements
+     */
+    total: number
+    totalSize: number
+    totalStorage: number
+    uploads: UploadedFile[]
+  }
+
+  interface UploadedFile {
+    channel: string
+    createdAt: string
+    deleted: boolean
+    name: string
+    size: number
+    type: string
+    updatedAt: string
+    url: string
+    uuid: string
     _id: string
   }
 }

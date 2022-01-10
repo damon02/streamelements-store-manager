@@ -11,6 +11,7 @@ $color-orange: #e8a61a;
 
 $color-black: #000000;
 $color-white: #ffffff;
+$color-lighter-gray: rgba($color-white, 0.35);
 $color-light-gray: rgba($color-white, 0.15);
 $color-gray: rgba($color-black, 0.25);
 $color-dark-gray: rgba($color-black, 0.15);
@@ -47,12 +48,17 @@ $font-size-xl: 20px;
   --color-background: #{$color-background};
   --color-background-light: #{lighten($color-background, 10)};
   --color-background-lighter: #{lighten($color-background, 20)};
+  --color-background-lightest: #{lighten($color-background, 40)};
+
+  --color-background-alpha: #{adjust-color($color: $color-background, $alpha: -0.4)};
+  --color-background-alt-alpha: #{adjust-color($color: $color-background-alt, $alpha: -0.4)};
 
   --color-background-alt-darker: #{darken($color-background-alt, 10)};
   --color-background-alt-dark: #{darken($color-background-alt, 5)};
   --color-background-alt: #{$color-background-alt};
   --color-background-alt-light: #{lighten($color-background-alt, 10)};
   --color-background-alt-lighter: #{lighten($color-background-alt, 20)};
+  --color-background-alt-lightest: #{lighten($color-background-alt, 40)};
 
   --color-primary: #{$color-primary};
   --color-primary-dark: #{$color-primary-dark};
@@ -67,6 +73,7 @@ $font-size-xl: 20px;
   --color-text: #{$color-text};
   --color-text-dark: #{$color-text-dark};
   --color-content-background: #{$color-white};
+  --color-white: #{$color-white};
 
   --font-family: #{$font-family};
   --font-weight: #{$font-weight-normal};

@@ -62,6 +62,22 @@ input[type='checkbox'] {
   &:focus {
     outline: 2px solid $color-primary;
   }
+
+  &.large {
+    font-size: $font-size-xl;
+    border: unset;
+    border-bottom: 1px solid var(--color-background-alt-lighter);
+    outline: unset;
+    padding: 16px;
+    font-weight: $font-weight-bold;
+    color: $color-primary;
+
+    &:focus,
+    &:active {
+      color: $color-primary;
+      border-bottom-color: $color-primary;
+    }
+  }
 }
 
 button {
@@ -73,9 +89,21 @@ button {
   background-color: var(--color-primary);
   color: #fff;
 
+  i.icon {
+    margin-right: 8px;
+  }
+
   &:hover {
     background-color: var(--color-primary-light);
     cursor: pointer;
+  }
+
+  &.secondary {
+    background-color: var(--color-background-lighter);
+
+    &:hover {
+      background-color: var(--color-background-lightest);
+    }
   }
 }
 

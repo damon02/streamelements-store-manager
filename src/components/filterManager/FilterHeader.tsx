@@ -50,7 +50,7 @@ const FilterHeader = ({
         <input
           className={(minCost || 0) < (maxCost || 0) ? 'warn' : ''}
           type="number"
-          value={minCost}
+          value={minCost || undefined}
           placeholder="Min"
           min={0}
           max={9999999999}
@@ -59,7 +59,7 @@ const FilterHeader = ({
         <input
           className={(minCost || 0) < (maxCost || 0) ? 'warn' : ''}
           type="number"
-          value={maxCost}
+          value={maxCost || undefined}
           placeholder="Max"
           min={1}
           max={1000000000}
@@ -82,7 +82,7 @@ const FilterHeader = ({
         <input
           className={(minVolume || 0) < (maxVolume || 0) ? 'warn' : ''}
           type="number"
-          value={maxVolume}
+          value={maxVolume || undefined}
           placeholder="Max"
           min={1}
           max={100}
@@ -96,7 +96,7 @@ const FilterHeader = ({
         <input
           className={(minSeconds || 0) < (maxSeconds || 0) ? 'warn' : ''}
           type="number"
-          value={minSeconds}
+          value={minSeconds || undefined}
           placeholder="Min"
           min={0}
           max={9999999999}
@@ -105,7 +105,7 @@ const FilterHeader = ({
         <input
           className={(minSeconds || 0) < (maxSeconds || 0) ? 'warn' : ''}
           type="number"
-          value={maxSeconds}
+          value={maxSeconds || undefined}
           placeholder="Max"
           min={1}
           max={1000000000}

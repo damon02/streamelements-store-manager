@@ -6,7 +6,6 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-
   background-color: var(--color-background);
 
   .login-block {
@@ -25,6 +24,17 @@
 
       input {
         margin-bottom: 10px;
+      }
+
+      .buttons {
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        button {
+          margin-bottom: 10px;
+        }
       }
     }
   }

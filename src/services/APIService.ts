@@ -6,6 +6,15 @@ export interface APIServiceProps {
   getMeDetails: () => Promise<StreamElements.Channel>
   getCurrentUserChannel: () => Promise<StreamElements.Channel>
   getChannelItems: (channelId: string) => Promise<StreamElements.ChannelItem[]>
+  saveChannelItem: (
+    channelId: string,
+    item: StreamElements.ChannelItem
+  ) => Promise<StreamElements.ChannelItem>
+  getUploadedItems: (
+    channelId: string,
+    limit?: number,
+    offset?: number
+  ) => Promise<StreamElements.UploadResponse>
 }
 
 const APIService = (token: string): APIServiceProps => ({
@@ -44,6 +53,37 @@ const APIService = (token: string): APIServiceProps => ({
     const query = objectToQueryString({ limit, offset })
 
     return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items${query}`, options)
+  },
+  saveChannelItem: (
+    channelId: string,
+    item: StreamElements.ChannelItem
+  ): Promise<StreamElements.ChannelItem> => {
+    const options: RequestInit = {
+      method: 'PUT',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    }
+
+    return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items/${item._id}`, options)
+  },
+  getUploadedItems: (
+    channelId: string,
+    limit?: number,
+    offset?: number
+  ): Promise<StreamElements.UploadResponse> => {
+    const options: RequestInit = {
+      method: 'GET',
+      headers: {
+        Authorization: token
+      }
+    }
+
+    const query = objectToQueryString({ limit, offset, type: 'audio' })
+
+    return fetchAPI(`${BASE_URL}/v2/uploads/${channelId}${query}`, options)
   }
 })
 

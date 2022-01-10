@@ -5,6 +5,7 @@ import App from './components/app/App'
 import { AuthProvider } from './hooks/useAuth'
 import reportWebVitals from './reportWebVitals'
 
+import 'rc-slider/assets/index.css'
 import './style/index.scss'
 
 ReactDOM.render(

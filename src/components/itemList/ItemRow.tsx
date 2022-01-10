@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { WaveSurfer, WaveForm } from 'wavesurfer-react'
 import { format } from 'date-fns'
+import { useNavigate } from 'react-router-dom'
 
 import { EditedChannelItem, StreamElements } from '../../@types/types'
 
@@ -10,6 +11,8 @@ interface IProps {
 }
 
 const ItemRow = ({ item, setItem }: IProps) => {
+  const navigate = useNavigate()
+
   const id = `waveform-${item._id}`
   const wavesurferRef = React.useRef<any>(null)
 
@@ -63,7 +66,7 @@ const ItemRow = ({ item, setItem }: IProps) => {
   }, [])
 
   return (
-    <tr className="item" key={item._id}>
+    <tr className="item" key={item._id} onClick={() => navigate(`item/${item._id}`)}>
       <td className="checkbox" />
       <td className="play">
         <div
@@ -153,4 +156,4 @@ const ItemRow = ({ item, setItem }: IProps) => {
   }
 }
 
-export default ItemRow
+export default React.memo(ItemRow)
