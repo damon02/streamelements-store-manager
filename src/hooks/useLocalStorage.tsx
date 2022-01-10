@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react'
+import { manipulatedKey } from '../utils/localStorage'
 
 export function useLocalStorage<T>(
   key: string,
   initialValue: T,
   forceReset?: boolean
 ): [T, Dispatch<SetStateAction<T>>] {
-  const manipulatedKey = (adjustableKey: string) => `onscreensounds-${adjustableKey}`
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(manipulatedKey(key))

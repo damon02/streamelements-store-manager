@@ -1,6 +1,6 @@
 import { formatDuration, intervalToDuration } from 'date-fns'
 import Slider from 'rc-slider'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { WaveSurfer, WaveForm } from 'wavesurfer-react'
 
@@ -9,6 +9,8 @@ import ItemWrapper from './ItemWrapper'
 import { useItems } from '../../hooks/useOutletContexts'
 import { EditedChannelItem, StreamElements } from '../../@types/types'
 import { useAuth } from '../../hooks/useAuth'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { useSessionStorage } from '../../hooks/useSessionStorage'
 
 import './ItemDetails.scss'
 
@@ -17,39 +19,63 @@ const ItemDetails = () => {
   const { APIService, user } = useAuth()
   const { itemId } = useParams()
   const { items, files, setItem } = useItems()
-
   const [saving, setSaving] = useState(false)
-
-  const wavesurferRef = React.useRef<any>(null)
 
   const item = items.find(i => i._id === itemId)
 
-  const [name, setName] = useState<string>(item?.name || '')
-  const [description, setDescription] = useState<string>(item?.description || '')
-  const [cost, setCost] = useState<number>(item?.cost || 0)
-  const [quantity, setQuantity] = useState<number>(item?.quantity.total || -1)
-  const [globalCooldown, setGlobalCooldown] = useState<number>(item?.cooldown?.global || 0)
-  const [userCooldown, setUserCooldown] = useState<number>(item?.cooldown?.user || 0)
-  const [categoryCooldownName, setCategoryCooldownName] = useState<string>(item?.categoryName || '')
-  const [categoryCooldownTime, setCategoryCooldownTime] = useState<number>(
+  const id = item?._id || 'new'
+  const [name, setName] = useSessionStorage<string>(`name-${id}`, item?.name || '')
+  const [description, setDescription] = useSessionStorage<string>(
+    `description-${id}`,
+    item?.description || ''
+  )
+  const [cost, setCost] = useSessionStorage<number>(`cost-${id}`, item?.cost || 0)
+  const [quantity, setQuantity] = useSessionStorage<number>(
+    `quantity-${id}`,
+    item?.quantity.total || -1
+  )
+  const [globalCooldown, setGlobalCooldown] = useSessionStorage<number>(
+    `globalCooldown-${id}`,
+    item?.cooldown?.global || 0
+  )
+  const [userCooldown, setUserCooldown] = useSessionStorage<number>(
+    `userCooldown-${id}`,
+    item?.cooldown?.user || 0
+  )
+  const [categoryCooldownName, setCategoryCooldownName] = useSessionStorage<string>(
+    `categoryCooldownName-${id}`,
+    item?.categoryName || ''
+  )
+  const [categoryCooldownTime, setCategoryCooldownTime] = useSessionStorage<number>(
+    `categoryCooldownTime-${id}`,
     item?.cooldown?.category || 0
   )
-  const [volume, setVolume] = useState<number>(item?.alert?.audio?.volume || 1)
-  const [command, setCommand] = useState<string>(item?.bot?.identifier || '')
+  const [volume, setVolume] = useSessionStorage<number>(
+    `volume-${id}`,
+    item?.alert?.audio?.volume || 1
+  )
+  const [command, setCommand] = useSessionStorage<string>(
+    `command-${id}`,
+    item?.bot?.identifier || ''
+  )
 
   // File specific values
   const [selectedFile, setSelectedFile] = useState<StreamElements.UploadedFile>()
-  const [playing, setPlaying] = useState(false)
-  const [duration, setDuration] = useState<number>()
-  const [playPosition, setPlayPosition] = useState(0)
-
-  const [redeemables, setRedeemables] = useState({
+  const [redeemables, setRedeemables] = useSessionStorage<{
+    website: boolean
+    extension: boolean
+    bot: boolean
+    confirmation: boolean
+  }>(`redeemables-${id}`, {
     website: false,
     extension: false,
     bot: true,
     confirmation: true
   })
 
+  const [playing, setPlaying] = useState(false)
+  const [playPosition, setPlayPosition] = useState(0)
+  const wavesurferRef = useRef<any>(null)
   const handleWSMount = useCallback(
     waveSurfer => {
       wavesurferRef.current = waveSurfer
@@ -81,6 +107,9 @@ const ItemDetails = () => {
     [selectedFile?.url]
   )
 
+  const ref = useRef<HTMLDivElement>(null)
+  useOnClickOutside(ref, handleCloseDetails)
+
   useEffect(() => {
     if (item) {
       setName(item.name)
@@ -100,6 +129,7 @@ const ItemDetails = () => {
       })
       setCommand(item.bot?.identifier || '')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item])
 
   useEffect(() => {
@@ -117,17 +147,13 @@ const ItemDetails = () => {
     }
   }, [volume])
 
-  useEffect(() => {
-    setTimeout(() => getDuration(), 1000)
-  }, [])
-
   if (!item) {
     return null
   }
 
   return (
     <div className="item-details-wrapper">
-      <div className="floating-block">
+      <div className="floating-block" ref={ref}>
         <div className="content left">
           <ItemWrapper
             label="Item name"
@@ -255,13 +281,13 @@ const ItemDetails = () => {
                 </div>
                 <div className="duration">
                   <i className="icon fas fa-music" />
-                  {duration ? (
+                  {item.duration ? (
                     `${
                       playPosition !== 0 &&
-                      Math.round(playPosition * 10) / 10 !== Math.round(duration * 10) / 10
+                      Math.round(playPosition * 10) / 10 !== Math.round(item.duration * 10) / 10
                         ? `${Math.round(playPosition * 10) / 10}s / `
                         : ''
-                    }${Math.round(duration * 10) / 10}s`
+                    }${Math.round(item.duration * 10) / 10}s`
                   ) : (
                     <i className="fas fa-spin fa-spinner" />
                   )}
@@ -400,11 +426,6 @@ const ItemDetails = () => {
 
   function handleCloseDetails() {
     navigate('/')
-  }
-
-  function getDuration() {
-    const dur = wavesurferRef.current.getDuration()
-    setDuration(dur)
   }
 
   async function applyChanges() {

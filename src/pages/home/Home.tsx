@@ -9,6 +9,7 @@ import { EditedChannelItem, StreamElements } from '../../@types/types'
 import { useAuth } from '../../hooks/useAuth'
 
 import './Home.scss'
+import { loadFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage'
 
 const Home = () => {
   const { user, setUser, APIService, setToken } = useAuth()
@@ -83,14 +84,40 @@ const Home = () => {
         const channelItems = await APIService?.getChannelItems(channelId)
 
         const filteredItems = channelItems.filter(i => i.alert?.audio?.src) as EditedChannelItem[]
+
+        // Fetch previously saved file durations
+        const key = `DURATIONS-${channelId}`
+        const previouslyCachedDurations: Array<{ url: string; duration: number }> =
+          loadFromLocalStorage(key, [])
+
         const itemsWithDuration = await Promise.all(
           filteredItems.map(async item => {
+            const cachedDuration = previouslyCachedDurations.find(
+              i => i.url === item.alert?.audio?.src
+            )?.duration
+
+            if (cachedDuration) {
+              return {
+                ...item,
+                duration: cachedDuration
+              }
+            }
             const duration = await determineSoundDuration(item.alert?.audio?.src || '')
             return {
               ...item,
               duration: duration || undefined
             }
           })
+        )
+
+        // Save determined new durations of URL links
+        saveToLocalStorage(
+          key,
+          itemsWithDuration
+            .map(i =>
+              i.alert?.audio?.src ? { url: i.alert?.audio?.src, duration: i.duration } : undefined
+            )
+            .filter(x => x)
         )
 
         setItems(itemsWithDuration)
