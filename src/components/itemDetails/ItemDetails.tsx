@@ -455,6 +455,7 @@ const ItemDetails = () => {
 
       // New item only
       channel: user?._id,
+      subscriberOnly: true,
       enabled: existingChannelItem?.enabled || true,
       featured: existingChannelItem?.enabled || false,
       type: 'effect',
