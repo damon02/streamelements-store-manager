@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/streamelements-store-manager/static/css/main.ad4b6a0e.chunk.css",
-    "main.js": "/streamelements-store-manager/static/js/main.81067a6b.chunk.js",
-    "main.js.map": "/streamelements-store-manager/static/js/main.81067a6b.chunk.js.map",
+    "main.css": "/streamelements-store-manager/static/css/main.bca23245.chunk.css",
+    "main.js": "/streamelements-store-manager/static/js/main.790c143c.chunk.js",
+    "main.js.map": "/streamelements-store-manager/static/js/main.790c143c.chunk.js.map",
     "runtime-main.js": "/streamelements-store-manager/static/js/runtime-main.1dc73d14.js",
     "runtime-main.js.map": "/streamelements-store-manager/static/js/runtime-main.1dc73d14.js.map",
     "static/css/2.25f1cd1f.chunk.css": "/streamelements-store-manager/static/css/2.25f1cd1f.chunk.css",
-    "static/js/2.a6d4794a.chunk.js": "/streamelements-store-manager/static/js/2.a6d4794a.chunk.js",
-    "static/js/2.a6d4794a.chunk.js.map": "/streamelements-store-manager/static/js/2.a6d4794a.chunk.js.map",
+    "static/js/2.b17c4cbf.chunk.js": "/streamelements-store-manager/static/js/2.b17c4cbf.chunk.js",
+    "static/js/2.b17c4cbf.chunk.js.map": "/streamelements-store-manager/static/js/2.b17c4cbf.chunk.js.map",
     "static/js/3.6ef1fb6b.chunk.js": "/streamelements-store-manager/static/js/3.6ef1fb6b.chunk.js",
     "static/js/3.6ef1fb6b.chunk.js.map": "/streamelements-store-manager/static/js/3.6ef1fb6b.chunk.js.map",
     "index.html": "/streamelements-store-manager/index.html",
     "static/css/2.25f1cd1f.chunk.css.map": "/streamelements-store-manager/static/css/2.25f1cd1f.chunk.css.map",
-    "static/css/main.ad4b6a0e.chunk.css.map": "/streamelements-store-manager/static/css/main.ad4b6a0e.chunk.css.map",
-    "static/js/2.a6d4794a.chunk.js.LICENSE.txt": "/streamelements-store-manager/static/js/2.a6d4794a.chunk.js.LICENSE.txt"
+    "static/css/main.bca23245.chunk.css.map": "/streamelements-store-manager/static/css/main.bca23245.chunk.css.map",
+    "static/js/2.b17c4cbf.chunk.js.LICENSE.txt": "/streamelements-store-manager/static/js/2.b17c4cbf.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1dc73d14.js",
     "static/css/2.25f1cd1f.chunk.css",
-    "static/js/2.a6d4794a.chunk.js",
-    "static/css/main.ad4b6a0e.chunk.css",
-    "static/js/main.81067a6b.chunk.js"
+    "static/js/2.b17c4cbf.chunk.js",
+    "static/css/main.bca23245.chunk.css",
+    "static/js/main.790c143c.chunk.js"
   ]
 }
