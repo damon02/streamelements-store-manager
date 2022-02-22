@@ -24,6 +24,10 @@ const ItemDetails = () => {
   const item = items.find(i => i._id === itemId)
 
   const id = item?._id || 'new'
+  const [enabled, setEnabled] = useSessionStorage<boolean | undefined>(
+    `enabled-${id}`,
+    item?.enabled
+  )
   const [name, setName] = useSessionStorage<string>(`name-${id}`, item?.name || '')
   const [description, setDescription] = useSessionStorage<string>(
     `description-${id}`,
@@ -115,6 +119,16 @@ const ItemDetails = () => {
             value={name}
             onChange={value => setName(value as string)}
           />
+          <div
+            className="item-wrapper checkbox"
+            onClick={() => setEnabled(!enabled)}
+            onKeyPress={() => setEnabled(!enabled)}
+            tabIndex={0}
+            role="button"
+          >
+            <input type="checkbox" checked={enabled} onClick={() => setEnabled(!enabled)} />
+            <label>Enabled</label>
+          </div>
           <ItemWrapper
             label="Description"
             type="textarea"
@@ -452,11 +466,11 @@ const ItemDetails = () => {
         sendResponse: redeemables.confirmation || false,
         identifier: command
       },
+      enabled,
 
       // New item only
       channel: user?._id,
       subscriberOnly: true,
-      enabled: existingChannelItem?.enabled || true,
       featured: existingChannelItem?.enabled || false,
       type: 'effect',
       userInput: [],
