@@ -7,5 +7,6 @@ export function useItems() {
     setItem: (item: StreamElements.ChannelItem) => void
     files: StreamElements.UploadedFile[]
     setFile: (file: StreamElements.UploadedFile) => void
+    reloadItems: () => void
   }>()
 }

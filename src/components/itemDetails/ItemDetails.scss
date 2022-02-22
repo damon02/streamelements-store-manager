@@ -22,6 +22,7 @@
   }
 
   .content {
+    position: relative;
     width: 100%;
     min-width: 600px;
     max-width: 600px;
@@ -91,12 +92,27 @@
       }
 
       &.file {
+        flex-direction: row;
+
         label {
           font-size: var(--font-size-m);
           margin-bottom: 4px;
 
           &.subtitle {
             font-size: var(--font-size-s);
+          }
+        }
+
+        button {
+          margin-left: 10px;
+
+          &.small {
+            min-width: unset;
+            margin-left: unset;
+            margin-right: 10px;
+            i {
+              margin: 0px;
+            }
           }
         }
       }
@@ -127,6 +143,63 @@
       }
     }
 
+    .file-list {
+      position: absolute;
+      background-color: var(--color-background-alt-light);
+      color: var(--color-white);
+      width: 100%;
+      z-index: 10000;
+      border-radius: var(--border-radius-base);
+      max-height: 60%;
+      overflow: auto;
+
+      .search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px;
+      }
+
+      .file-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+
+        .play-button {
+          padding: 2px 8px;
+        }
+
+        .sound-name {
+          width: 100%;
+        }
+
+        .dateCreated {
+          display: flex;
+          justify-content: flex-end;
+          width: 200px;
+          text-align: right;
+
+          > div {
+            &:last-of-type {
+              min-width: 60px;
+            }
+          }
+        }
+
+        &:nth-of-type(even) {
+          background-color: var(--color-background-alt);
+        }
+
+        &:hover,
+        &.active {
+          background-color: var(--color-primary);
+          cursor: pointer;
+        }
+      }
+    }
+
     .file-tag {
       display: flex;
       align-items: center;
@@ -135,20 +208,32 @@
       border-radius: var(--border-radius-base);
       background-color: var(--color-primary);
       color: var(--color-white);
+      width: 100%;
 
-      .play-button {
+      button.play-button {
         min-width: unset;
         max-width: 50px;
+        margin-left: unset;
         margin-right: 16px;
       }
 
       .waveform {
-        min-width: 200px;
+        min-width: 100px;
         margin-left: auto;
       }
 
       i {
         margin-right: 8px;
+      }
+
+      &.drop {
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+
+        input {
+          font-family: var(--font-family);
+        }
       }
     }
   }

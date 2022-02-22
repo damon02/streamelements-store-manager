@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import ItemRow from './ItemRow'
 
@@ -20,6 +21,7 @@ interface IProps {
 }
 
 const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IProps) => {
+  const navigate = useNavigate()
   const { height } = useWindowSize()
   const previousItemLength = usePrevious(items.length)
   const debouncedHeight = useDebounce(height, 100)
@@ -176,6 +178,14 @@ const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IP
                 onClick={() => setShowAll(true)}
               >
                 Show all
+              </button>
+              <button
+                className="button primary small with-icon-margin showAll"
+                type="button"
+                onClick={() => navigate(`item/new`)}
+              >
+                <i className="icon fas fa-plus" />
+                Add new sound
               </button>
             </>
           ) : (

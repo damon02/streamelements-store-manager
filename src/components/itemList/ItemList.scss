@@ -57,6 +57,10 @@
       background-color: var(--color-background-alt);
     }
 
+    &.disabled {
+      opacity: 0.5;
+    }
+
     &:hover {
       background-color: var(--color-background-alt-light);
       cursor: pointer;
@@ -186,8 +190,12 @@
         margin: 0px;
       }
 
-      &.showAll:last-of-type {
+      &.showAll {
         margin-left: 16px;
+      }
+
+      &.with-icon-margin i {
+        margin-right: 8px;
       }
     }
   }

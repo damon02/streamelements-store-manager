@@ -1,6 +1,6 @@
 import { BASE_URL } from '../utils/constants'
 import { objectToQueryString } from '../utils/general'
-import { StreamElements } from '../@types/types'
+import { EditedChannelItem, StreamElements } from '../@types/types'
 
 export interface APIServiceProps {
   getMeDetails: () => Promise<StreamElements.Channel>
@@ -8,13 +8,22 @@ export interface APIServiceProps {
   getChannelItems: (channelId: string) => Promise<StreamElements.ChannelItem[]>
   saveChannelItem: (
     channelId: string,
-    item: StreamElements.ChannelItem
+    item: EditedChannelItem
+  ) => Promise<StreamElements.ChannelItem>
+  createChannelItem: (
+    channelId: string,
+    item: EditedChannelItem
   ) => Promise<StreamElements.ChannelItem>
   getUploadedItems: (
     channelId: string,
     limit?: number,
     offset?: number
   ) => Promise<StreamElements.UploadResponse>
+  uploadFile: (
+    channelId: string,
+    file: Blob,
+    fileName?: string
+  ) => Promise<StreamElements.UploadedFile>
 }
 
 const APIService = (token: string): APIServiceProps => ({
@@ -56,7 +65,7 @@ const APIService = (token: string): APIServiceProps => ({
   },
   saveChannelItem: (
     channelId: string,
-    item: StreamElements.ChannelItem
+    item: EditedChannelItem
   ): Promise<StreamElements.ChannelItem> => {
     const options: RequestInit = {
       method: 'PUT',
@@ -68,6 +77,21 @@ const APIService = (token: string): APIServiceProps => ({
     }
 
     return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items/${item._id}`, options)
+  },
+  createChannelItem: (
+    channelId: string,
+    item: EditedChannelItem
+  ): Promise<StreamElements.ChannelItem> => {
+    const options: RequestInit = {
+      method: 'POST',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    }
+
+    return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items`, options)
   },
   getUploadedItems: (
     channelId: string,
@@ -84,6 +108,24 @@ const APIService = (token: string): APIServiceProps => ({
     const query = objectToQueryString({ limit, offset, type: 'audio' })
 
     return fetchAPI(`${BASE_URL}/v2/uploads/${channelId}${query}`, options)
+  },
+  uploadFile: (
+    channelId: string,
+    file: Blob,
+    fileName?: string
+  ): Promise<StreamElements.UploadedFile> => {
+    const formData = new FormData()
+    formData.append('file', file, fileName)
+
+    const options: RequestInit = {
+      method: 'POST',
+      headers: {
+        Authorization: token
+      },
+      body: formData
+    }
+
+    return fetchAPI(`${BASE_URL}/v2/uploads/${channelId}`, options)
   }
 })
 

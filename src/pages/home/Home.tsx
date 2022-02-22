@@ -59,9 +59,18 @@ const Home = () => {
       </div>
 
       {/** Used for rendering above page */}
-      <Outlet context={{ items, files, setItem: handleSetItem, setFile: handleSetFile }} />
+      <Outlet
+        context={{ items, files, setItem: handleSetItem, setFile: handleSetFile, reloadItems }}
+      />
     </>
   )
+
+  function reloadItems() {
+    if (user?._id) {
+      memoizedFetchChannelItems(user._id)
+      memoizedFetchAllFileDetails(user._id)
+    }
+  }
 
   async function fetchUserDetails() {
     if (APIService) {

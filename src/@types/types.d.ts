@@ -108,7 +108,10 @@ namespace StreamElements {
         type?: string
       }
       audio?: {
+        id?: string
         volume?: number // FLOAT
+        name?: string
+        type?: string
         src?: string | null
       }
       enabled?: boolean
@@ -170,5 +173,20 @@ namespace StreamElements {
 }
 
 interface EditedChannelItem extends StreamElements.ChannelItem {
+  createdAt?: string
+  enabled?: boolean
+  featured?: boolean
+  order?: number
+  public?: boolean
+  subscriberOnly?: boolean
+  type?: string
+  updatedAt?: string
+  _id?: string
   duration?: number
+  accessCodes?: {
+    keys: []
+    mode: string
+  }
+  accessLevel?: number
+  allowMessages?: boolean
 }

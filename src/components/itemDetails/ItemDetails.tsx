@@ -1,10 +1,10 @@
 import { formatDuration, intervalToDuration } from 'date-fns'
 import Slider from 'rc-slider'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { WaveSurfer, WaveForm } from 'wavesurfer-react'
 
 import ItemWrapper from './ItemWrapper'
+import FilePicker from './FilePicker'
 
 import { useItems } from '../../hooks/useOutletContexts'
 import { EditedChannelItem, StreamElements } from '../../@types/types'
@@ -18,7 +18,7 @@ const ItemDetails = () => {
   const navigate = useNavigate()
   const { APIService, user } = useAuth()
   const { itemId } = useParams()
-  const { items, files, setItem } = useItems()
+  const { items, files, setItem, reloadItems } = useItems()
   const [saving, setSaving] = useState(false)
 
   const item = items.find(i => i._id === itemId)
@@ -40,7 +40,7 @@ const ItemDetails = () => {
   )
   const [userCooldown, setUserCooldown] = useSessionStorage<number>(
     `userCooldown-${id}`,
-    item?.cooldown?.user || 0
+    item?.cooldown?.user || 10
   )
   const [categoryCooldownName, setCategoryCooldownName] = useSessionStorage<string>(
     `categoryCooldownName-${id}`,
@@ -61,6 +61,7 @@ const ItemDetails = () => {
 
   // File specific values
   const [selectedFile, setSelectedFile] = useState<StreamElements.UploadedFile>()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [redeemables, setRedeemables] = useSessionStorage<{
     website: boolean
     extension: boolean
@@ -73,41 +74,7 @@ const ItemDetails = () => {
     confirmation: true
   })
 
-  const [playing, setPlaying] = useState(false)
-  const [playPosition, setPlayPosition] = useState(0)
-  const wavesurferRef = useRef<any>(null)
-  const handleWSMount = useCallback(
-    waveSurfer => {
-      wavesurferRef.current = waveSurfer
-
-      if (wavesurferRef.current && selectedFile?.url) {
-        wavesurferRef.current.load(selectedFile?.url)
-
-        wavesurferRef.current.on('play', () => {
-          setPlaying(true)
-        })
-
-        wavesurferRef.current.on('pause', () => {
-          setPlaying(false)
-        })
-
-        wavesurferRef.current.on('finish', () => {
-          setPlaying(false)
-        })
-
-        wavesurferRef.current.on('seek', () => {
-          setPlayPosition(wavesurferRef.current.getCurrentTime())
-        })
-
-        wavesurferRef.current.on('audioprocess', () => {
-          setPlayPosition(wavesurferRef.current.getCurrentTime())
-        })
-      }
-    },
-    [selectedFile?.url]
-  )
-
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = React.useRef<HTMLDivElement>(null)
   useOnClickOutside(ref, handleCloseDetails)
 
   useEffect(() => {
@@ -136,20 +103,6 @@ const ItemDetails = () => {
     const match = files.find(u => u.url === item?.alert?.audio?.src)
     setSelectedFile(match)
   }, [files, item])
-
-  const playSound = React.useCallback(() => {
-    wavesurferRef.current.playPause()
-  }, [])
-
-  useEffect(() => {
-    if (wavesurferRef.current) {
-      wavesurferRef.current.setVolume(volume)
-    }
-  }, [volume])
-
-  if (!item) {
-    return null
-  }
 
   return (
     <div className="item-details-wrapper">
@@ -259,62 +212,14 @@ const ItemDetails = () => {
           </div>
         </div>
         <div className="content right">
-          <div className="item-wrapper file">
-            <div className="file-tag">
-              <button
-                className="play-button"
-                type="button"
-                onClick={e => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  if (item.alert?.audio?.src) {
-                    playSound()
-                  }
-                }}
-              >
-                {playing ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
-              </button>
-              <div className="detail-rows">
-                <div className="name">
-                  <i className="icon fas fa-file-audio" />
-                  <span className="subtitle">{selectedFile?.name}</span>
-                </div>
-                <div className="duration">
-                  <i className="icon fas fa-music" />
-                  {item.duration ? (
-                    `${
-                      playPosition !== 0 &&
-                      Math.round(playPosition * 10) / 10 !== Math.round(item.duration * 10) / 10
-                        ? `${Math.round(playPosition * 10) / 10}s / `
-                        : ''
-                    }${Math.round(item.duration * 10) / 10}s`
-                  ) : (
-                    <i className="fas fa-spin fa-spinner" />
-                  )}
-                </div>
-              </div>
-
-              {selectedFile && (
-                <div className="waveform">
-                  <WaveSurfer onMount={handleWSMount} ref={wavesurferRef}>
-                    <WaveForm
-                      id={`waveform-${selectedFile?._id}`}
-                      container={`waveform-${selectedFile?._id}`}
-                      p
-                      cursorColor="#ff000000"
-                      waveColor="#BDBABD"
-                      progressColor="#FFFFFF"
-                      height={35}
-                      barWidth={1}
-                      barHeight={3}
-                      cursorWidth={1}
-                      hideScrollbar={true}
-                    />
-                  </WaveSurfer>
-                </div>
-              )}
-            </div>
-          </div>
+          <FilePicker
+            files={files}
+            item={item}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+            volume={volume}
+            fileInputRef={fileInputRef}
+          />
 
           <div className="item-wrapper volume">
             <label>Volume ({Math.round((volume || 0) * 100)}%)</label>
@@ -407,17 +312,30 @@ const ItemDetails = () => {
             subtitle={`To play, type "!sound ${command}" in the chat`}
           />
           <div className="buttons">
-            <button className="button primary green" type="button" onClick={applyChanges}>
-              {saving ? <i className="fas fa-spin fa-spinner" /> : 'Save changes'}
-            </button>
             <button
-              className="button secondary"
+              className="button primary green"
               type="button"
-              disabled={saving}
-              onClick={() => handleCloseDetails()}
+              disabled={!selectedFile}
+              onClick={() => handleOnSave()}
             >
-              Cancel changes
+              {saving ? (
+                <i className="fas fa-spin fa-spinner" />
+              ) : !item?.alert?.audio?.src ? (
+                'Upload new sound'
+              ) : (
+                'Save changes'
+              )}
             </button>
+            {item?.alert?.audio?.src && (
+              <button
+                className="button secondary"
+                type="button"
+                disabled={saving}
+                onClick={() => handleCloseDetails()}
+              >
+                Cancel changes
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -428,45 +346,47 @@ const ItemDetails = () => {
     navigate('/')
   }
 
-  async function applyChanges() {
-    if (user && APIService && item) {
+  async function handleOnSave() {
+    const file = fileInputRef?.current?.files?.[0]
+
+    // If a file is selected, upload it to StreamElements
+    if (user && APIService && file) {
+      try {
+        const uploadedFile = await APIService.uploadFile(user._id, file)
+        addNewSound(uploadedFile)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    // Then check if it is a new sound
+    if (!item?.alert?.audio?.src && selectedFile) {
+      await addNewSound(selectedFile)
+    } else {
+      // Or changes have been made to an existing sound
+      await applyChanges()
+    }
+
+    // Reload/refresh sounds
+    reloadItems()
+  }
+
+  async function addNewSound(file: StreamElements.UploadedFile) {
+    if (user && APIService && file) {
       try {
         setSaving(true)
-        const newItem: EditedChannelItem = {
-          ...item,
-          name,
-          description,
-          cost,
-          quantity: { total: quantity },
-          cooldown: {
-            ...item.cooldown,
-            category: categoryCooldownTime,
-            global: globalCooldown,
-            user: userCooldown
+        const newItem = convertInputsToEditedChannelItem(undefined, file)
+        const uploadedItem = await APIService.createChannelItem(user._id, {
+          ...newItem,
+          accessCodes: {
+            keys: [],
+            mode: 'multi'
           },
-          categoryName: categoryCooldownName,
-          sources: [
-            redeemables.bot ? 'bot' : undefined,
-            redeemables.extension ? 'extension' : undefined,
-            redeemables.website ? 'website' : undefined
-          ].filter(v => v) as string[],
-          alert: {
-            ...item.alert,
-            audio: {
-              src: selectedFile?.url,
-              volume
-            }
-          },
-          bot: {
-            sendResponse: redeemables.confirmation || false,
-            identifier: command
-          }
-        }
+          accessLevel: 100,
+          allowMessages: false
+        })
+        setItem(uploadedItem)
 
-        delete newItem.duration
-
-        const processedItem = await APIService?.saveChannelItem(user._id, newItem)
-        setItem(processedItem)
         handleCloseDetails()
       } catch (error) {
         console.error(error)
@@ -474,6 +394,77 @@ const ItemDetails = () => {
         setSaving(false)
       }
     }
+  }
+
+  async function applyChanges() {
+    if (user && APIService && item) {
+      try {
+        setSaving(true)
+        const newItem: EditedChannelItem = convertInputsToEditedChannelItem(item)
+
+        const processedItem = await APIService?.saveChannelItem(user._id, newItem)
+        setItem(processedItem)
+
+        handleCloseDetails()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setSaving(false)
+      }
+    }
+  }
+
+  function convertInputsToEditedChannelItem(
+    existingChannelItem?: EditedChannelItem,
+    newFile?: StreamElements.UploadedFile
+  ): EditedChannelItem {
+    const newItem: EditedChannelItem = {
+      ...existingChannelItem,
+      name,
+      description,
+      cost,
+      quantity: { total: quantity },
+      cooldown: {
+        ...existingChannelItem?.cooldown,
+        category: categoryCooldownTime,
+        global: globalCooldown,
+        user: userCooldown
+      },
+      categoryName: categoryCooldownName,
+      sources: [
+        redeemables.bot ? 'bot' : undefined,
+        redeemables.extension ? 'extension' : undefined,
+        redeemables.website ? 'website' : undefined
+      ].filter(v => v) as string[],
+      alert: {
+        ...existingChannelItem?.alert,
+        enabled: true,
+        graphics: { duration: 8, type: 'image' },
+        audio: {
+          id: newFile?._id,
+          name: newFile?.name,
+          src: newFile?.url || selectedFile?.url,
+          type: 'sound',
+          volume
+        }
+      },
+      bot: {
+        sendResponse: redeemables.confirmation || false,
+        identifier: command
+      },
+
+      // New item only
+      channel: user?._id,
+      enabled: existingChannelItem?.enabled || true,
+      featured: existingChannelItem?.enabled || false,
+      type: 'effect',
+      userInput: [],
+      accessLevel: 100
+    }
+
+    delete newItem.duration
+
+    return newItem
   }
 }
 

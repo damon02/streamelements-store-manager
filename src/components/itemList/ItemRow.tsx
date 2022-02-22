@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 
 import { EditedChannelItem } from '../../@types/types'
+import { usePrevious } from '../../hooks/usePrevious'
 
 interface IProps {
   item: EditedChannelItem
@@ -13,12 +14,15 @@ interface IProps {
 const ItemRow = ({ item, setItem }: IProps) => {
   const navigate = useNavigate()
 
+  const previousSource = usePrevious(item.alert?.audio?.src)
+
   const id = `waveform-${item._id}`
   const wavesurferRef = React.useRef<any>(null)
 
   const [playing, setPlaying] = React.useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [playPosition, setPlayPosition] = React.useState(0)
+  const [waveformInitialized, setInitialized] = React.useState(false)
   const handleWSMount = React.useCallback(
     waveSurfer => {
       wavesurferRef.current = waveSurfer
@@ -45,6 +49,8 @@ const ItemRow = ({ item, setItem }: IProps) => {
         wavesurferRef.current.on('audioprocess', () => {
           setPlayPosition(wavesurferRef.current.getCurrentTime())
         })
+
+        setInitialized(true)
       }
     },
     [item.alert?.audio?.src]
@@ -55,13 +61,27 @@ const ItemRow = ({ item, setItem }: IProps) => {
   }, [])
 
   React.useEffect(() => {
+    if (
+      waveformInitialized &&
+      previousSource !== item.alert?.audio?.src &&
+      item.alert?.audio?.src
+    ) {
+      wavesurferRef.current.load(item.alert?.audio?.src)
+    }
+  }, [item.alert?.audio?.src, previousSource, waveformInitialized])
+
+  React.useEffect(() => {
     if (wavesurferRef.current) {
       wavesurferRef.current.setVolume(item.alert?.audio?.volume)
     }
   }, [item.alert?.audio?.volume])
 
   return (
-    <tr className="item" key={item._id} onClick={() => navigate(`item/${item._id}`)}>
+    <tr
+      className={`item${!item.enabled ? ' disabled' : ''}`}
+      key={item._id}
+      onClick={() => navigate(`item/${item._id}`)}
+    >
       <td className="play">
         <div
           className="play-button"
@@ -128,7 +148,7 @@ const ItemRow = ({ item, setItem }: IProps) => {
         <i className={item.subscriberOnly ? 'fas fa-check' : 'fas fa-times'} />
       </td>
       <td className="dateCreated center">
-        {format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')}
+        {item.createdAt && format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')}
       </td>
     </tr>
   )
