@@ -7,8 +7,8 @@ import FilePickerRow from './FilePickerRow'
 
 interface IProps {
   files: StreamElements.UploadedFile[]
-  selectedFile: StreamElements.UploadedFile | undefined
-  setSelectedFile: (file: StreamElements.UploadedFile | undefined) => void
+  selectedFile: StreamElements.UploadedFile | 'new' | undefined
+  setSelectedFile: (file: StreamElements.UploadedFile | 'new' | undefined) => void
   fileInputRef: React.LegacyRef<HTMLInputElement>
   item: EditedChannelItem | undefined
   volume: number
@@ -34,7 +34,7 @@ const FilePicker = ({
     waveSurfer => {
       wavesurferRef.current = waveSurfer
 
-      if (wavesurferRef.current && selectedFile?.url) {
+      if (wavesurferRef.current && selectedFile !== 'new' && selectedFile?.url) {
         wavesurferRef.current.load(selectedFile?.url)
 
         wavesurferRef.current.on('play', () => {
@@ -58,7 +58,7 @@ const FilePicker = ({
         })
       }
     },
-    [selectedFile?.url]
+    [selectedFile]
   )
 
   const playSound = React.useCallback(() => {
@@ -72,10 +72,10 @@ const FilePicker = ({
   }, [volume])
 
   useEffect(() => {
-    if (wavesurferRef.current && selectedFile?.url) {
+    if (wavesurferRef.current && selectedFile !== 'new' && selectedFile?.url) {
       wavesurferRef.current.load(selectedFile?.url)
     }
-  }, [selectedFile?.url])
+  }, [selectedFile])
 
   useEffect(() => {
     if (!query || query.length === 0) {
@@ -86,7 +86,7 @@ const FilePicker = ({
     setFilteredResults(sortByKey(newResults, 'dateCreated'))
   }, [query, files])
 
-  if (!selectedFile) {
+  if (!selectedFile || selectedFile === 'new') {
     // Accepts mp3, aac, wav, ogg and webm
     return (
       <>
@@ -98,6 +98,7 @@ const FilePicker = ({
               name="sound"
               accept="audio/mp3,audio/aac,audio/wav,audio/ogg"
               ref={fileInputRef}
+              onChange={() => setSelectedFile('new')}
             />
           </div>
           <button
@@ -124,7 +125,7 @@ const FilePicker = ({
               <FilePickerRow
                 key={f._id}
                 item={f}
-                selectedFile={selectedFile}
+                selectedFile={selectedFile === 'new' ? undefined : selectedFile}
                 handleOnClick={file => setSelectedFile(file)}
               />
             ))}

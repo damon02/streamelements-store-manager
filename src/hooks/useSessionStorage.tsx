@@ -14,6 +14,10 @@ export function useSessionStorage<T>(
         window.sessionStorage.removeItem(manipulatedKey(key))
       }
 
+      if (item === 'undefined' && forceReset !== true) {
+        return undefined
+      }
+
       return item && forceReset !== true ? JSON.parse(item) : initialValue
     } catch (error) {
       console.error(error)

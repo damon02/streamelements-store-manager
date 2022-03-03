@@ -26,14 +26,14 @@ const ItemDetails = () => {
   const id = item?._id || 'new'
   const [enabled, setEnabled] = useSessionStorage<boolean | undefined>(
     `enabled-${id}`,
-    item?.enabled
+    item?.enabled === undefined ? true : item.enabled
   )
   const [name, setName] = useSessionStorage<string>(`name-${id}`, item?.name || '')
   const [description, setDescription] = useSessionStorage<string>(
     `description-${id}`,
     item?.description || ''
   )
-  const [cost, setCost] = useSessionStorage<number>(`cost-${id}`, item?.cost || 0)
+  const [cost, setCost] = useSessionStorage<number>(`cost-${id}`, item?.cost || 10)
   const [quantity, setQuantity] = useSessionStorage<number>(
     `quantity-${id}`,
     item?.quantity.total || -1
@@ -64,7 +64,9 @@ const ItemDetails = () => {
   )
 
   // File specific values
-  const [selectedFile, setSelectedFile] = useState<StreamElements.UploadedFile>()
+  const [selectedFile, setSelectedFile] = useState<
+    StreamElements.UploadedFile | 'new' | undefined
+  >()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [redeemables, setRedeemables] = useSessionStorage<{
     website: boolean
@@ -326,20 +328,25 @@ const ItemDetails = () => {
             subtitle={`To play, type "!sound ${command}" in the chat`}
           />
           <div className="buttons">
-            <button
-              className="button primary green"
-              type="button"
-              disabled={!selectedFile}
-              onClick={() => handleOnSave()}
-            >
-              {saving ? (
-                <i className="fas fa-spin fa-spinner" />
-              ) : !item?.alert?.audio?.src ? (
-                'Upload new sound'
-              ) : (
-                'Save changes'
-              )}
-            </button>
+            {id === 'new' ? (
+              <button
+                className="button primary"
+                type="button"
+                disabled={selectedFile !== 'new'}
+                onClick={() => handleOnSave()}
+              >
+                {saving ? <i className="fas fa-spin fa-spinner" /> : 'Upload new sound'}
+              </button>
+            ) : (
+              <button
+                className="button primary"
+                type="button"
+                disabled={selectedFile !== 'new' && selectedFile?.url === item?.alert?.audio?.src}
+                onClick={() => handleOnSave()}
+              >
+                {saving ? <i className="fas fa-spin fa-spinner" /> : 'Change sound'}
+              </button>
+            )}
             {item?.alert?.audio?.src && (
               <button
                 className="button secondary"
@@ -374,7 +381,7 @@ const ItemDetails = () => {
     }
 
     // Then check if it is a new sound
-    if (!item?.alert?.audio?.src && selectedFile) {
+    if (!item?.alert?.audio?.src && selectedFile && selectedFile !== 'new') {
       await addNewSound(selectedFile)
     } else {
       // Or changes have been made to an existing sound
@@ -457,7 +464,7 @@ const ItemDetails = () => {
         audio: {
           id: newFile?._id,
           name: newFile?.name,
-          src: newFile?.url || selectedFile?.url,
+          src: newFile?.url ? newFile.url : selectedFile !== 'new' ? selectedFile?.url : undefined,
           type: 'sound',
           volume
         }
