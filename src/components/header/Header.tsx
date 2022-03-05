@@ -1,17 +1,19 @@
 import * as React from 'react'
 import { animated, useSpring } from 'react-spring'
 import { easeQuadInOut } from 'd3-ease'
+import { format } from 'date-fns'
 
-import { StreamElements } from '../../@types/types'
+import { EditedChannelItem, StreamElements } from '../../@types/types'
 import './Header.scss'
 
 interface IProps {
   user?: StreamElements.Channel
   loading: boolean
   logout: () => void
+  allItems: EditedChannelItem[]
 }
 
-const Header = ({ user, loading, logout }: IProps) => {
+const Header = ({ user, loading, logout, allItems }: IProps) => {
   const [showMenu, setShowMenu] = React.useState<boolean>(false)
 
   const username = user?.displayName
@@ -45,12 +47,30 @@ const Header = ({ user, loading, logout }: IProps) => {
         </div>
       </div>
       <animated.div className="user-menu" style={{ ...menuAnimationProps }}>
+        <button className="button-menu" type="button" onClick={() => copyToClipboardCSV()}>
+          Copy all items to clipboard
+        </button>
         <button className="button-menu danger" type="button" onClick={() => logout()}>
           Log out
         </button>
       </animated.div>
     </div>
   )
+
+  function copyToClipboardCSV() {
+    const text = `Command;Description;Cost;Date added\n${allItems
+      .filter(i => i.enabled)
+      .map(
+        item =>
+          `${item.bot?.identifier};${item.description || ' '};${item.cost || 0};${
+            item.createdAt ? format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss') : 'Unknown'
+          };`
+      )
+      .join('\n')}`
+
+    navigator.clipboard.writeText(text)
+    setShowMenu(false)
+  }
 }
 
 export default Header

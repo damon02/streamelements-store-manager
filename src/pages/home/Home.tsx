@@ -38,7 +38,7 @@ const Home = () => {
   return (
     <>
       <div className="home">
-        <Header user={user} loading={loading} logout={() => setToken(null)} />
+        <Header allItems={items} user={user} loading={loading} logout={() => setToken(null)} />
         <div className="content">
           <FilterManager items={items} setItems={setItems}>
             {(FiltersComponent, processedItems, sort, setSort, resetFilters) => (

@@ -52,7 +52,8 @@
 
   .user-menu {
     position: absolute;
-    min-width: 200px;
+    min-width: 250px;
+    max-width: 250px;
     top: 66px;
     right: 20px;
     transition: all 0.5ms ease-in-out;
@@ -70,7 +71,7 @@
     > button {
       background-color: unset;
       font-weight: 600;
-      text-align: left;
+      text-align: right;
       width: 100%;
       margin: 0px;
 
