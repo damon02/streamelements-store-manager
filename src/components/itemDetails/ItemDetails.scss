@@ -52,6 +52,11 @@
     .buttons {
       display: flex;
       justify-content: space-between;
+
+      &:last-of-type {
+        justify-content: flex-end;
+        margin-top: 16px;
+      }
     }
 
     .item-wrapper {

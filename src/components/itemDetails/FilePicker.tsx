@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { WaveSurfer, WaveForm } from 'wavesurfer-react'
 
 import { EditedChannelItem, StreamElements } from '../../@types/types'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { sortByKey } from '../../utils/general'
 import FilePickerRow from './FilePickerRow'
 
@@ -60,6 +61,9 @@ const FilePicker = ({
     },
     [selectedFile]
   )
+
+  const fileListRef = React.useRef<HTMLDivElement>(null)
+  useOnClickOutside(fileListRef, () => setShowFileList(false))
 
   const playSound = React.useCallback(() => {
     wavesurferRef.current.playPause()
@@ -208,7 +212,7 @@ const FilePicker = ({
         </button>
       </div>
       {showFileList && (
-        <div className="file-list">
+        <div className="file-list" ref={fileListRef}>
           <div className="search-header">
             <input
               placeholder="Search by sound name"

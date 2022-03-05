@@ -92,7 +92,7 @@ const Home = () => {
         setLoading(true)
         const channelItems = await APIService?.getChannelItems(channelId)
 
-        const filteredItems = channelItems.filter(i => i.alert?.audio?.src) as EditedChannelItem[]
+        const filteredItems = channelItems as EditedChannelItem[]
 
         // Fetch previously saved file durations
         const key = `DURATIONS-${channelId}`

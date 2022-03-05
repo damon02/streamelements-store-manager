@@ -26,7 +26,7 @@ const FilterManager = ({ items, setItems, children }: IProps) => {
   const [maxSeconds, setMaxSeconds] = useLocalStorage<number | undefined>('maxSeconds', undefined)
   const [sort, setSort] = useLocalStorage<{ sort: TableSortType; order: 'asc' | 'desc' }>('sort', {
     sort: 'dateCreated',
-    order: 'asc'
+    order: 'desc'
   })
 
   const [processedItems, setProcessedItems] = React.useState<EditedChannelItem[]>(items)

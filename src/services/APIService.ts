@@ -14,6 +14,7 @@ export interface APIServiceProps {
     channelId: string,
     item: EditedChannelItem
   ) => Promise<StreamElements.ChannelItem>
+  deleteChannelItem: (channelId: string, itemId: string) => Promise<void>
   getUploadedItems: (
     channelId: string,
     limit?: number,
@@ -93,6 +94,16 @@ const APIService = (token: string): APIServiceProps => ({
 
     return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items`, options)
   },
+  deleteChannelItem: (channelId: string, itemId: string): Promise<void> => {
+    const options: RequestInit = {
+      method: 'DELETE',
+      headers: {
+        Authorization: token
+      }
+    }
+
+    return fetch(`${BASE_URL}/v2/store/${channelId}/items/${itemId}`, options).then(() => {})
+  },
   getUploadedItems: (
     channelId: string,
     limit?: number,
@@ -134,6 +145,7 @@ function fetchAPI<T>(url: string, options: RequestInit): Promise<T> {
     if (!response.ok) {
       throw new Error(response.statusText)
     }
+
     return response.json()
   })
 }

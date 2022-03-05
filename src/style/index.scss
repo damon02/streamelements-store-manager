@@ -115,6 +115,16 @@ button {
       background-color: var(--color-background-light);
     }
   }
+
+  &.warning {
+    background-color: var(--color-warning);
+    color: #fff;
+  }
+
+  &.danger {
+    background-color: var(--color-red);
+    color: #fff;
+  }
 }
 
 .bold {
