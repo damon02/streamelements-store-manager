@@ -13,6 +13,7 @@ interface IProps {
 
 const ItemRow = ({ item, setItem }: IProps) => {
   const navigate = useNavigate()
+  const [hasCopiedToClipboard, setHasCopied] = React.useState(false)
 
   const previousSource = usePrevious(item.alert?.audio?.src)
 
@@ -76,6 +77,12 @@ const ItemRow = ({ item, setItem }: IProps) => {
     }
   }, [item.alert?.audio?.volume])
 
+  React.useEffect(() => {
+    if (hasCopiedToClipboard) {
+      setTimeout(() => setHasCopied(false), 1000)
+    }
+  }, [hasCopiedToClipboard])
+
   return (
     <tr
       className={`item${!item.enabled ? ' disabled' : ''}`}
@@ -84,7 +91,7 @@ const ItemRow = ({ item, setItem }: IProps) => {
     >
       <td className="play">
         <div
-          className="play-button"
+          className="inline-button"
           role="button"
           tabIndex={0}
           onKeyPress={e => {
@@ -105,6 +112,31 @@ const ItemRow = ({ item, setItem }: IProps) => {
           }}
         >
           <i className={playing ? 'fas fa-pause' : 'fas fa-play'} />
+        </div>
+      </td>
+      <td className="copy-clipboard">
+        <div
+          className={`inline-button${hasCopiedToClipboard ? ' active' : ''}`}
+          role="button"
+          tabIndex={0}
+          onKeyPress={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            navigator.clipboard.writeText(`!sound ${item.bot?.identifier}` || '')
+            setHasCopied(true)
+          }}
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            navigator.clipboard.writeText(`!sound ${item.bot?.identifier}` || '')
+            setHasCopied(true)
+          }}
+        >
+          {hasCopiedToClipboard ? (
+            <i className="fas fa-clipboard-check" />
+          ) : (
+            <i className="far fa-clipboard" />
+          )}
         </div>
       </td>
       <td className="sound-name">

@@ -45,6 +45,8 @@ const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IP
           <tr className="table-header">
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <th className="play" />
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <th className="copy-clipboard" />
             <th className="sound-name clickable" onClick={() => handleSort('soundName')}>
               Sound name
               <i

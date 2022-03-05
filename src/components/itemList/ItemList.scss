@@ -70,6 +70,26 @@
       min-width: 100px;
     }
 
+    .inline-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 34px;
+      width: 40px;
+      max-width: 48px;
+      border-radius: var(--border-radius-base);
+      transition: ease-in-out all 100ms;
+
+      &:hover {
+        background-color: var(--color-background-alt-lighter);
+      }
+
+      &.active {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+      }
+    }
+
     td,
     th {
       &.center {
@@ -77,20 +97,12 @@
       }
 
       &.play {
-        min-width: 40px;
-        .play-button {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 34px;
-          width: 40px;
-          max-width: 48px;
-          border-radius: var(--border-radius-base);
+        width: 40px;
+      }
 
-          &:hover {
-            background-color: var(--color-background-alt-lighter);
-          }
-        }
+      &.copy-clipboard {
+        width: 40px;
+        text-align: center;
       }
 
       &.sound-name {
