@@ -58,12 +58,16 @@ const Header = ({ user, loading, logout, allItems }: IProps) => {
   )
 
   function copyToClipboardCSV() {
-    const text = `Command;Description;Cost;Date added\n${allItems
+    const text = `Command;Name;Description;Cost;Date added\n${allItems
       .filter(i => i.enabled)
       .map(
         item =>
-          `${item.bot?.identifier};${item.description || ' '};${item.cost || 0};${
-            item.createdAt ? format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss') : 'Unknown'
+          `${item.bot?.identifier};${item.name || '<empty name>'};${
+            item.description || '<empty description>'
+          };${item.cost || 0};${
+            item.createdAt
+              ? format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')
+              : '<empty createdAt>'
           };`
       )
       .join('\n')}`
