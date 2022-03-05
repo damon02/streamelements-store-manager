@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/streamelements-store-manager/static/css/main.16dfddf0.chunk.css",
-    "main.js": "/streamelements-store-manager/static/js/main.8aea5e59.chunk.js",
-    "main.js.map": "/streamelements-store-manager/static/js/main.8aea5e59.chunk.js.map",
+    "main.js": "/streamelements-store-manager/static/js/main.d87015f8.chunk.js",
+    "main.js.map": "/streamelements-store-manager/static/js/main.d87015f8.chunk.js.map",
     "runtime-main.js": "/streamelements-store-manager/static/js/runtime-main.0e6e6be3.js",
     "runtime-main.js.map": "/streamelements-store-manager/static/js/runtime-main.0e6e6be3.js.map",
     "static/css/2.25f1cd1f.chunk.css": "/streamelements-store-manager/static/css/2.25f1cd1f.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.25f1cd1f.chunk.css",
     "static/js/2.a4f54c76.chunk.js",
     "static/css/main.16dfddf0.chunk.css",
-    "static/js/main.8aea5e59.chunk.js"
+    "static/js/main.d87015f8.chunk.js"
   ]
 }
