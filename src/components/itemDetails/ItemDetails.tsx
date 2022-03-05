@@ -110,6 +110,8 @@ const ItemDetails = () => {
     setSelectedFile(match)
   }, [files, item])
 
+  const unsavedChanges = hasUnsavedChanges()
+
   return (
     <div className="item-details-wrapper">
       <div className="floating-block" ref={ref}>
@@ -341,7 +343,7 @@ const ItemDetails = () => {
               <button
                 className="button primary"
                 type="button"
-                disabled={selectedFile !== 'new' && selectedFile?.url === item?.alert?.audio?.src}
+                disabled={!unsavedChanges}
                 onClick={() => handleOnSave()}
               >
                 {saving ? <i className="fas fa-spin fa-spinner" /> : 'Change sound'}
@@ -365,6 +367,23 @@ const ItemDetails = () => {
 
   function handleCloseDetails() {
     navigate('/')
+  }
+
+  function hasUnsavedChanges() {
+    return (
+      (selectedFile !== 'new' && selectedFile?.url !== item?.alert?.audio?.src) ||
+      (enabled !== item?.enabled && item?.enabled !== undefined) ||
+      name !== item?.name ||
+      description !== item?.description ||
+      cost !== item?.cost ||
+      quantity !== item?.quantity.total ||
+      globalCooldown !== item.cooldown?.global ||
+      userCooldown !== item.cooldown.user ||
+      categoryCooldownName !== item.categoryName ||
+      categoryCooldownTime !== item.cooldown.category ||
+      volume !== item.alert?.audio?.volume ||
+      command !== item.bot?.identifier
+    )
   }
 
   async function handleOnSave() {
