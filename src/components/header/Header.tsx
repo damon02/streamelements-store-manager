@@ -65,7 +65,18 @@ const Header = ({ user, loading, guestUsername, logout, allItems }: IProps) => {
         <button className="button-menu" type="button" onClick={() => copyToClipboardCSV()}>
           Copy all items to clipboard
         </button>
+        <button
+          className="button-menu"
+          type="button"
+          onClick={() =>
+            window.open(`https://github.com/damon02/streamelements-store-manager`, '_blank')
+          }
+        >
+          <i className="icon fab fa-github" />
+          View on GitHub
+        </button>
         <button className="button-menu danger" type="button" onClick={() => logout()}>
+          <i className="icon fas fa-sign-out-alt" />
           Log out
         </button>
       </animated.div>

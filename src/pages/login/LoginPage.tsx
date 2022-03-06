@@ -124,7 +124,17 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-        <div className="copy">
+        <div
+          className="copy"
+          onClick={() =>
+            window.open('https://github.com/damon02/streamelements-store-manager', '_system')
+          }
+          onKeyDown={() =>
+            window.open('https://github.com/damon02/streamelements-store-manager', '_system')
+          }
+          role="button"
+          tabIndex={0}
+        >
           <div className="who">&copy; damon02 - {format(new Date(), 'yyyy')}</div>
           <div className="version">v{pjson.version}</div>
         </div>

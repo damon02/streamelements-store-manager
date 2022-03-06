@@ -148,6 +148,12 @@
     position: absolute;
     bottom: 25px;
     opacity: 0.4;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+      opacity: 1;
+    }
   }
 }
 
