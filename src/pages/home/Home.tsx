@@ -35,11 +35,14 @@ const Home = () => {
   useEffect(() => {
     if (user?._id) {
       memoizedFetchChannelItems(user._id)
-      memoizedFetchAllFileDetails(user._id)
+
+      if (!guestUsername) {
+        memoizedFetchAllFileDetails(user._id)
+      }
     } else {
       setItems([])
     }
-  }, [user?._id, memoizedFetchChannelItems, memoizedFetchAllFileDetails])
+  }, [user?._id, memoizedFetchChannelItems, memoizedFetchAllFileDetails, guestUsername])
 
   return (
     <>

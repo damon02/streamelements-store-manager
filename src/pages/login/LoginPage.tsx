@@ -1,10 +1,11 @@
 import { format } from 'date-fns'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import pjson from '../../../package.json'
 import Title from '../../components/title/Title'
 import { useAuth } from '../../hooks/useAuth'
+import { queryStringToObject } from '../../utils/general'
 
 import './LoginPage.scss'
 
@@ -16,6 +17,8 @@ const LoginPage = () => {
     setGuestUsername: setGuestUserId
   } = useAuth()
   const navigate = useNavigate()
+  const query = useLocation()
+  const queryObject = queryStringToObject(query.search)
 
   const [jwt, setJWT] = useState<string>('')
   const [username, setUsername] = useState<string>('')
@@ -24,6 +27,11 @@ const LoginPage = () => {
     if (token || guestUserId) {
       navigate('/')
     }
+
+    if (queryObject.channel) {
+      setGuestUserId(queryObject.channel)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
