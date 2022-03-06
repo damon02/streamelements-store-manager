@@ -72,6 +72,9 @@
 
     .inline-button {
       display: flex;
+      min-width: unset;
+      background-color: unset;
+      color: var(--color-text);
       justify-content: center;
       align-items: center;
       height: 34px;
@@ -82,11 +85,17 @@
 
       &:hover {
         background-color: var(--color-background-alt-lighter);
+        color: var(--color-white);
       }
 
       &.active {
         background-color: var(--color-primary);
         color: var(--color-white);
+      }
+
+      &:disabled {
+        color: var(--color-text-darkish);
+        background-color: unset;
       }
     }
 
@@ -104,6 +113,12 @@
       &.copy-clipboard {
         width: 40px;
         text-align: center;
+      }
+
+      &.duration .multi-line-warn {
+        max-width: 80%;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
       &.sound-name {
@@ -128,6 +143,14 @@
           }
         }
       }
+
+      &.dateCreated {
+        .date-creation {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
     }
   }
 }
@@ -137,6 +160,7 @@
 }
 
 .page-controller-wrapper {
+  z-index: 100;
   position: fixed;
   bottom: 0px;
   left: 2rem;
@@ -190,7 +214,12 @@
       margin-left: 16px;
       margin-right: 16px;
 
+      .page-number {
+        text-align: center;
+      }
+
       .amount-per-page {
+        text-align: center;
         font-size: var(--font-size-s);
         color: var(--color-text);
       }
@@ -203,7 +232,8 @@
         margin: 0px;
       }
 
-      &.showAll {
+      &.showAll,
+      &.new {
         margin-left: 16px;
       }
 
@@ -227,25 +257,49 @@
   }
 }
 
-@media screen and (max-width: 880px) {
-  .item-list {
-    th,
-    td {
-      &.dateCreated {
-        display: none;
+@media screen and (max-width: 921px) {
+  .page-controller {
+    .buttons-pages {
+      button {
+        min-width: unset;
+
+        i.icon {
+          margin-right: unset;
+        }
+
+        .text {
+          display: none;
+        }
       }
     }
   }
 }
 
-@media screen and (max-width: 750px) {
-  .item-list tr {
+@media screen and (max-width: 890px) {
+  .item-list {
+    .table-header th {
+      padding-left: 2px;
+      padding-right: 2px;
+    }
     th,
     td {
       &.volume {
         display: none;
       }
 
+      &.dateCreated {
+        .date-creation {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .item-list tr {
+    th,
+    td {
       &.sound-name {
         width: 200px;
         max-width: 200px;
@@ -259,39 +313,40 @@
       }
     }
   }
+}
 
+@media screen and (max-width: 750px) {
   .page-controller-wrapper {
     left: 0;
     right: 0;
     margin-top: unset;
     border-radius: unset;
+
+    .button.showAll {
+      display: none;
+    }
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
   .item-list tr {
     th,
     td {
       &.waveform {
-        display: none;
-      }
-    }
-  }
-
-  .page-controller {
-    button {
-      min-width: unset;
-      .text {
-        display: none;
+        min-width: 64px;
       }
     }
   }
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 515px) {
   .item-list tr {
     th,
     td {
+      &.waveform {
+        min-width: 32px;
+      }
+
       &.sound-name {
         width: 150px;
         max-width: 150px;
@@ -305,6 +360,58 @@
       }
     }
   }
+
+  .page-controller-wrapper {
+    .page-controller {
+      .page-summary {
+        min-width: 90px;
+        margin-left: 4px;
+        margin-right: 10px;
+      }
+
+      .buttons-pages {
+        width: 100%;
+        button {
+          padding: 0px;
+          width: 100%;
+        }
+      }
+      .button.new.with-icon-margin {
+        padding: 0px;
+        width: 50px;
+        height: 31px;
+        .text {
+          display: none;
+        }
+
+        i.icon {
+          margin: unset;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .item-list tr {
+    th,
+    td {
+      &.waveform {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 446px) {
+  .item-list tr {
+    th,
+    td {
+      &.dateCreated {
+        display: none;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 390px) {
@@ -314,13 +421,6 @@
       &.duration {
         display: none;
       }
-    }
-  }
-
-  button.button {
-    &.first-page,
-    &.last-page {
-      display: none;
     }
   }
 }

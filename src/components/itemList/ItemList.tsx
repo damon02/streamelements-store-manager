@@ -2,8 +2,9 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ItemRow from './ItemRow'
+import Title from '../title/Title'
 
-import { EditedChannelItem, TableSortType } from '../../@types/types'
+import { EditedChannelItem, StreamElements, TableSortType } from '../../@types/types'
 import { usePrevious } from '../../hooks/usePrevious'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { useDebounce } from '../../hooks/useDebounce'
@@ -14,7 +15,7 @@ import './ItemList.scss'
 interface IProps {
   allItems: EditedChannelItem[]
   items: EditedChannelItem[]
-  setItems: (items: EditedChannelItem[]) => void
+  user: StreamElements.Channel | undefined
   sort: { sort: TableSortType; order: 'asc' | 'desc' }
   setSort: (sort: { sort: TableSortType; order: 'asc' | 'desc' }) => void
   resetFilters: () => void
@@ -24,7 +25,7 @@ interface IProps {
 const ItemList = ({
   allItems,
   items,
-  setItems,
+  user,
   sort,
   setSort,
   resetFilters,
@@ -39,16 +40,15 @@ const ItemList = ({
   const [page, setPage] = useSessionStorage<number>('page', 1)
   const lastPage = Math.ceil(items.length / itemsPerPage)
 
-  const [showAll, setShowAll] = React.useState(false)
-
   React.useEffect(() => {
-    if (!showAll && previousItemLength !== items.length) {
+    if (previousItemLength !== items.length) {
       setPage(1)
     }
-  }, [previousItemLength, items.length, setPage, showAll])
+  }, [previousItemLength, items.length, setPage])
 
   return (
     <div className="list-wrapper">
+      <Title titleItems={[`Page ${page}`, 'Sounds', user?.displayName]} />
       <table className="item-list">
         <thead>
           <tr className="table-header">
@@ -119,11 +119,9 @@ const ItemList = ({
           </tr>
         </thead>
         <tbody>
-          {(showAll ? items : items.slice((page - 1) * itemsPerPage, page * itemsPerPage)).map(
-            i => (
-              <ItemRow item={i} key={i._id} guestUsername={guestUsername} />
-            )
-          )}
+          {items.slice((page - 1) * itemsPerPage, page * itemsPerPage).map(i => (
+            <ItemRow item={i} key={i._id} guestUsername={guestUsername} />
+          ))}
         </tbody>
       </table>
       <div className="page-controller-wrapper">
@@ -139,78 +137,57 @@ const ItemList = ({
           </div>
         )}
         <div className="page-controller">
-          {!showAll ? (
-            <>
-              <div className="buttons-pages">
-                <button
-                  className="button first-page primary small"
-                  type="button"
-                  onClick={() => setPage(1)}
-                  disabled={page === 1}
-                >
-                  <i className="icon fas fa-angle-double-left" />
-                </button>
-                <button
-                  className="button previous"
-                  type="button"
-                  onClick={() => handlePageClick('previous')}
-                  disabled={page === 1}
-                >
-                  <i className="icon fas fa-angle-left" />
-                  <span className="text">Previous page</span>
-                </button>
-                <div className="page-summary">
-                  <div className="page-number">
-                    Page {page} of{' '}
-                    {items.length < itemsPerPage ? 1 : Math.ceil(items.length / itemsPerPage)}
-                  </div>
-                  <div className="amount-per-page">{items.length} results</div>
-                </div>
-                <button
-                  className="button next"
-                  type="button"
-                  onClick={() => handlePageClick('next')}
-                  disabled={page === lastPage}
-                >
-                  <i className="icon fas fa-angle-right" />
-                  <span className="text">Next page</span>
-                </button>
-                <button
-                  className="button last-page primary small"
-                  type="button"
-                  onClick={() => setPage(lastPage)}
-                  disabled={page === lastPage}
-                >
-                  <i className="icon fas fa-angle-double-right" />
-                </button>
-              </div>
-              {!guestUsername && (
-                <button
-                  className="button secondary small showAll"
-                  type="button"
-                  onClick={() => setShowAll(true)}
-                >
-                  Show all (slow)
-                </button>
-              )}
-              {!guestUsername && (
-                <button
-                  className="button primary small with-icon-margin showAll"
-                  type="button"
-                  onClick={() => navigate(`item/new`)}
-                >
-                  <i className="icon fas fa-plus" />
-                  Add new sound
-                </button>
-              )}
-            </>
-          ) : (
+          <div className="buttons-pages">
             <button
-              className="button secondary showAll"
+              className="button first-page primary small"
               type="button"
-              onClick={() => setShowAll(false)}
+              onClick={() => setPage(1)}
+              disabled={page === 1}
             >
-              Turn on pagination
+              <i className="icon fas fa-angle-double-left" />
+            </button>
+            <button
+              className="button previous"
+              type="button"
+              onClick={() => handlePageClick('previous')}
+              disabled={page === 1}
+            >
+              <i className="icon fas fa-angle-left" />
+              <span className="text">Previous page</span>
+            </button>
+            <div className="page-summary">
+              <div className="page-number">
+                Page {page} of{' '}
+                {items.length < itemsPerPage ? 1 : Math.ceil(items.length / itemsPerPage)}
+              </div>
+              <div className="amount-per-page">{items.length} results</div>
+            </div>
+            <button
+              className="button next"
+              type="button"
+              onClick={() => handlePageClick('next')}
+              disabled={page === lastPage}
+            >
+              <i className="icon fas fa-angle-right" />
+              <span className="text">Next page</span>
+            </button>
+            <button
+              className="button last-page primary small"
+              type="button"
+              onClick={() => setPage(lastPage)}
+              disabled={page === lastPage}
+            >
+              <i className="icon fas fa-angle-double-right" />
+            </button>
+          </div>
+          {!guestUsername && (
+            <button
+              className="button primary small with-icon-margin new"
+              type="button"
+              onClick={() => navigate(`item/new`)}
+            >
+              <i className="icon fas fa-plus" />
+              <span className="text">Add new sound</span>
             </button>
           )}
         </div>

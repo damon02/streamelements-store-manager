@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
+
 import App from './components/app/App'
 import { AuthProvider } from './hooks/useAuth'
 import reportWebVitals from './reportWebVitals'
@@ -10,11 +12,13 @@ import './style/index.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </HashRouter>
+    <HelmetProvider>
+      <HashRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </HashRouter>
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

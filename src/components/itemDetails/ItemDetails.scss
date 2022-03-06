@@ -97,26 +97,21 @@
       }
 
       &.file {
-        flex-direction: row;
+        .inner-wrapper {
+          position: relative;
+          display: flex;
+          flex-direction: row;
 
-        label {
-          font-size: var(--font-size-m);
-          margin-bottom: 4px;
+          button {
+            margin-left: 10px;
 
-          &.subtitle {
-            font-size: var(--font-size-s);
-          }
-        }
-
-        button {
-          margin-left: 10px;
-
-          &.small {
-            min-width: unset;
-            margin-left: unset;
-            margin-right: 10px;
-            i {
-              margin: 0px;
+            &.small {
+              min-width: unset;
+              margin-left: unset;
+              margin-right: 10px;
+              i {
+                margin: 0px;
+              }
             }
           }
         }
@@ -150,19 +145,30 @@
 
     .file-list {
       position: absolute;
+      top: 64px;
       background-color: var(--color-background-alt-light);
       color: var(--color-white);
       width: 100%;
       z-index: 10000;
       border-radius: var(--border-radius-base);
-      max-height: 60%;
-      overflow: auto;
+      max-height: 300px;
+      height: 100%;
 
       .search-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 4px 8px;
+
+        > span {
+          min-width: 100px;
+          text-align: right;
+        }
+      }
+
+      .list {
+        height: calc(100% - 50px);
+        overflow: auto;
       }
 
       .file-row {
@@ -205,6 +211,10 @@
       }
     }
 
+    button.showAll {
+      min-width: 110px;
+    }
+
     .file-tag {
       display: flex;
       align-items: center;
@@ -227,6 +237,11 @@
         margin-left: auto;
       }
 
+      .name {
+        max-height: 24px;
+        overflow: hidden;
+      }
+
       i {
         margin-right: 8px;
       }
@@ -239,6 +254,45 @@
         input {
           font-family: var(--font-family);
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .item-details-wrapper {
+    overflow: hidden;
+    .floating-block {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      max-height: 80vh;
+      overflow: auto;
+
+      .content {
+        margin-bottom: 32px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .item-details-wrapper {
+    .floating-block {
+      max-height: calc(100vh - 100px);
+    }
+
+    .content {
+      max-width: unset;
+      min-width: unset;
+
+      .item-wrapper.file {
+        button {
+          min-width: unset;
+        }
+      }
+      .search-header {
+        text-align: right;
       }
     }
   }

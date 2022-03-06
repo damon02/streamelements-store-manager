@@ -90,11 +90,10 @@ const FilePicker = ({
     setFilteredResults(sortByKey(newResults, 'dateCreated'))
   }, [query, files])
 
-  if (!selectedFile || selectedFile === 'new') {
-    // Accepts mp3, aac, wav, ogg and webm
-    return (
-      <>
-        <div className="item-wrapper file">
+  return (
+    <div className="item-wrapper file" ref={fileListRef}>
+      <div className="inner-wrapper">
+        {!selectedFile || selectedFile === 'new' ? (
           <div className="file-tag drop">
             <input
               type="file"
@@ -105,26 +104,95 @@ const FilePicker = ({
               onChange={() => setSelectedFile('new')}
             />
           </div>
-          <button
-            className="button secondary"
-            type="button"
-            onClick={() => setShowFileList(!showFileList)}
-          >
-            {showFileList ? 'Hide files' : 'Show files'}
-          </button>
-        </div>
-        {showFileList && (
-          <div className="file-list">
-            <div className="search-header">
-              <input
-                placeholder="Search by sound name"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-              />
+        ) : (
+          <>
+            <button
+              className="button small secondary"
+              type="button"
+              onClick={() => setSelectedFile(undefined)}
+            >
+              <i className="icon fas fa-times" />
+            </button>
+            <div className="file-tag">
+              <button
+                className="play-button"
+                type="button"
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  if (item?.alert?.audio?.src) {
+                    playSound()
+                  }
+                }}
+              >
+                {playing ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
+              </button>
+              <div className="detail-rows">
+                <div className="name">
+                  <i className="icon fas fa-file-audio" />
+                  <span className="subtitle">{selectedFile?.name}</span>
+                </div>
+                <div className="duration">
+                  <i className="icon fas fa-music" />
+                  {item?.duration ? (
+                    `${
+                      playPosition !== 0 &&
+                      Math.round(playPosition * 10) / 10 !== Math.round(item?.duration * 10) / 10
+                        ? `${Math.round(playPosition * 10) / 10}s / `
+                        : ''
+                    }${Math.round(item.duration * 10) / 10}s`
+                  ) : (
+                    <i className="fas fa-spin fa-spinner" />
+                  )}
+                </div>
+              </div>
+
+              {selectedFile && (
+                <div className="waveform">
+                  <WaveSurfer onMount={handleWSMount} ref={wavesurferRef}>
+                    <WaveForm
+                      id={`waveform-${selectedFile?._id}`}
+                      container={`waveform-${selectedFile?._id}`}
+                      p
+                      cursorColor="#ff000000"
+                      waveColor="#BDBABD"
+                      progressColor="#FFFFFF"
+                      height={35}
+                      barWidth={1}
+                      barHeight={3}
+                      cursorWidth={1}
+                      hideScrollbar={true}
+                    />
+                  </WaveSurfer>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+        <button
+          className="button secondary showAll"
+          type="button"
+          onClick={() => setShowFileList(!showFileList)}
+        >
+          <i className={`icon fas fa-${showFileList ? 'angle-up' : 'angle-down'}`} />
+          <span>All files</span>
+        </button>
+      </div>
+      {showFileList && (
+        <div className="file-list">
+          <div className="search-header">
+            <input
+              placeholder="Search by sound name"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+            <span>
               {filteredResults?.length
                 ? `${filteredResults.length} results`
                 : `Showing all ${files.length} files`}
-            </div>
+            </span>
+          </div>
+          <div className="list">
             {(filteredResults || files).map(f => (
               <FilePickerRow
                 key={f._id}
@@ -134,106 +202,9 @@ const FilePicker = ({
               />
             ))}
           </div>
-        )}
-      </>
-    )
-  }
-
-  return (
-    <>
-      <div className="item-wrapper file">
-        <button
-          className="button small secondary"
-          type="button"
-          onClick={() => setSelectedFile(undefined)}
-        >
-          <i className="icon fas fa-times" />
-        </button>
-        <div className="file-tag">
-          <button
-            className="play-button"
-            type="button"
-            onClick={e => {
-              e.preventDefault()
-              e.stopPropagation()
-              if (item?.alert?.audio?.src) {
-                playSound()
-              }
-            }}
-          >
-            {playing ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
-          </button>
-          <div className="detail-rows">
-            <div className="name">
-              <i className="icon fas fa-file-audio" />
-              <span className="subtitle">{selectedFile?.name}</span>
-            </div>
-            <div className="duration">
-              <i className="icon fas fa-music" />
-              {item?.duration ? (
-                `${
-                  playPosition !== 0 &&
-                  Math.round(playPosition * 10) / 10 !== Math.round(item?.duration * 10) / 10
-                    ? `${Math.round(playPosition * 10) / 10}s / `
-                    : ''
-                }${Math.round(item.duration * 10) / 10}s`
-              ) : (
-                <i className="fas fa-spin fa-spinner" />
-              )}
-            </div>
-          </div>
-
-          {selectedFile && (
-            <div className="waveform">
-              <WaveSurfer onMount={handleWSMount} ref={wavesurferRef}>
-                <WaveForm
-                  id={`waveform-${selectedFile?._id}`}
-                  container={`waveform-${selectedFile?._id}`}
-                  p
-                  cursorColor="#ff000000"
-                  waveColor="#BDBABD"
-                  progressColor="#FFFFFF"
-                  height={35}
-                  barWidth={1}
-                  barHeight={3}
-                  cursorWidth={1}
-                  hideScrollbar={true}
-                />
-              </WaveSurfer>
-            </div>
-          )}
-        </div>
-        <button
-          className="button secondary"
-          type="button"
-          onClick={() => setShowFileList(!showFileList)}
-        >
-          {showFileList ? 'Hide files' : 'Show files'}
-        </button>
-      </div>
-      {showFileList && (
-        <div className="file-list" ref={fileListRef}>
-          <div className="search-header">
-            <input
-              placeholder="Search by sound name"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-            />
-            {filteredResults?.length
-              ? `${filteredResults.length} results`
-              : `Showing all ${files.length} files`}
-          </div>
-          {(filteredResults || files).map(f => (
-            <FilePickerRow
-              key={f._id}
-              item={f}
-              selectedFile={selectedFile}
-              handleOnClick={file => setSelectedFile(file)}
-            />
-          ))}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

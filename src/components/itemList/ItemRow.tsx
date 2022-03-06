@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { EditedChannelItem } from '../../@types/types'
 import { usePrevious } from '../../hooks/usePrevious'
+import { isSafari } from '../../utils/constants'
 
 interface IProps {
   item: EditedChannelItem
@@ -96,10 +97,10 @@ const ItemRow = ({ item, guestUsername }: IProps) => {
       }}
     >
       <td className="play">
-        <div
+        <button
           className="inline-button"
-          role="button"
-          tabIndex={0}
+          type="button"
+          disabled={(item.alert?.audio?.src || '')?.includes('.ogg') && isSafari}
           onKeyPress={e => {
             e.preventDefault()
             e.stopPropagation()
@@ -118,7 +119,7 @@ const ItemRow = ({ item, guestUsername }: IProps) => {
           }}
         >
           <i className={playing ? 'fas fa-pause' : 'fas fa-play'} />
-        </div>
+        </button>
       </td>
       <td className="copy-clipboard">
         <div
@@ -158,6 +159,8 @@ const ItemRow = ({ item, guestUsername }: IProps) => {
       <td className="duration center">
         {item.duration ? (
           `${Math.round(item.duration * 10) / 10}s`
+        ) : isSafari && item.alert?.audio?.src?.includes('.ogg') ? (
+          <div className="multi-line-warn">OGG files not supported</div>
         ) : (
           <i className="fas fa-question" />
         )}
@@ -186,7 +189,10 @@ const ItemRow = ({ item, guestUsername }: IProps) => {
         <i className={item.subscriberOnly ? 'fas fa-check' : 'fas fa-times'} />
       </td>
       <td className="dateCreated center">
-        {item.createdAt && format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')}
+        <div className="date-creation">
+          <span>{item.createdAt && format(new Date(item.createdAt), 'dd-MM-yyyy')}&nbsp;</span>
+          <span>{item.createdAt && format(new Date(item.createdAt), 'HH:mm:ss')}</span>
+        </div>
       </td>
       <td className="download">
         <div

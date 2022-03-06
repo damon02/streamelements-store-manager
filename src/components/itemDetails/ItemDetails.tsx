@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import ItemWrapper from './ItemWrapper'
 import FilePicker from './FilePicker'
+import DeletePrompt from './DeletePrompt'
+import Title from '../title/Title'
 
 import { useItems } from '../../hooks/useOutletContexts'
 import { EditedChannelItem, StreamElements } from '../../@types/types'
@@ -13,7 +15,6 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { useSessionStorage } from '../../hooks/useSessionStorage'
 
 import './ItemDetails.scss'
-import DeletePrompt from './DeletePrompt'
 
 const ItemDetails = () => {
   const navigate = useNavigate()
@@ -124,6 +125,13 @@ const ItemDetails = () => {
 
   return (
     <>
+      <Title
+        titleItems={[
+          name || (id === 'new' ? 'New sound' : command || 'Sound'),
+          'Sounds',
+          user?.displayName
+        ]}
+      />
       <DeletePrompt
         api={APIService}
         channelId={user?._id}

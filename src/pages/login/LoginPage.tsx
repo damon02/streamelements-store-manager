@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import pjson from '../../../package.json'
+import Title from '../../components/title/Title'
 import { useAuth } from '../../hooks/useAuth'
 
 import './LoginPage.scss'
@@ -34,6 +35,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
+      <Title titleItems={['Login']} />
       <h1 className="page-title">StreamElements Sounds manager</h1>
       <div className="content-split">
         <div className="block guest-mode">

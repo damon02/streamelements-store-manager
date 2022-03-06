@@ -74,6 +74,7 @@ $font-size-xl: 20px;
   --color-danger-dark: #{darken($color-red, 20)};
   --color-danger-light: #{lighten($color-red, 10)};
   --color-text: #{$color-text};
+  --color-text-darkish: #{darken($color-text, 40)};
   --color-text-dark: #{$color-text-dark};
   --color-content-background: #{$color-white};
   --color-white: #{$color-white};

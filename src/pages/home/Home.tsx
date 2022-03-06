@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { AudioContext } from 'standardized-audio-context'
 
 import Header from '../../components/header/Header'
 import ItemList from '../../components/itemList/ItemList'
@@ -59,8 +60,8 @@ const Home = () => {
               <>
                 {FiltersComponent}
                 <ItemList
+                  user={user}
                   items={processedItems}
-                  setItems={setItems}
                   allItems={items}
                   sort={sort}
                   setSort={setSort}
@@ -197,14 +198,20 @@ const Home = () => {
 
   async function determineSoundDuration(url: string) {
     if (url) {
-      const ctx = new AudioContext()
+      try {
+        const ctx = new AudioContext()
 
-      const response = await fetch(url, {
-        method: 'GET'
-      }).then(r => r.arrayBuffer())
+        const response = await fetch(url, {
+          method: 'GET'
+        }).then(r => r.arrayBuffer())
 
-      const audioBuffer = await ctx.decodeAudioData(response, a => a)
-      return audioBuffer.duration
+        const audioBuffer = await ctx.decodeAudioData(response, a => a)
+
+        return audioBuffer.duration
+      } catch (error) {
+        console.error(error)
+        return undefined
+      }
     }
 
     return undefined
