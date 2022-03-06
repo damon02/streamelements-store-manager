@@ -24,12 +24,16 @@ const LoginPage = () => {
   const [username, setUsername] = useState<string>('')
 
   useEffect(() => {
-    if (token || guestUserId) {
-      navigate('/')
+    if (queryObject.channel && !token) {
+      // Set guest user id only if no previous token is present
+      // And queryobject contains a channel name
+      setGuestUserId(queryObject.channel)
     }
 
-    if (queryObject.channel) {
-      setGuestUserId(queryObject.channel)
+    if (token) {
+      // If user has a token (previously logged in)
+      // Navigate and restart session
+      navigate('/')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,6 +41,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (guestUserId) {
+      // If user sets a new guestUserId from this page
+      // pass login page
       navigate('/')
     }
   }, [guestUserId, navigate])

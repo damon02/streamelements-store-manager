@@ -3,8 +3,9 @@ import { easeQuadInOut } from 'd3-ease'
 import { animated, useSpring } from 'react-spring'
 
 import { APIServiceProps } from '../../services/APIService'
-import './DeletePrompt.scss'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+
+import './DeletePrompt.scss'
 
 interface IProps {
   api: APIServiceProps | null

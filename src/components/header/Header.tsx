@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 
 import { EditedChannelItem, StreamElements } from '../../@types/types'
 import './Header.scss'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 interface IProps {
   user?: StreamElements.Channel
@@ -27,11 +28,18 @@ const Header = ({ user, loading, guestUsername, logout, allItems }: IProps) => {
     config: { duration: 250, easing: easeQuadInOut }
   })
 
+  const ref = React.useRef<HTMLDivElement>(null)
+  useOnClickOutside(ref, () => setShowMenu(false))
+
   return (
     <div className={`header-app${guestUsername ? ' guest-mode' : ''}`}>
       <div className="title">
         <h1>StreamElements Sounds editor</h1>
-        {guestUsername && <div className="guest">Guest mode</div>}
+        {guestUsername ? (
+          <div className="guest">Guest mode</div>
+        ) : (
+          <div className="account">Editor mode</div>
+        )}
       </div>
       <div className="buttons">
         <div
@@ -53,7 +61,7 @@ const Header = ({ user, loading, guestUsername, logout, allItems }: IProps) => {
           </div>
         </div>
       </div>
-      <animated.div className="user-menu" style={{ ...menuAnimationProps }}>
+      <animated.div className="user-menu" style={{ ...menuAnimationProps }} ref={ref}>
         <button className="button-menu" type="button" onClick={() => copyToClipboardCSV()}>
           Copy all items to clipboard
         </button>

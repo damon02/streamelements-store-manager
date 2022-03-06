@@ -1,4 +1,4 @@
-# onscreen-sounds
+# StreamElements Store Manager
 
 ### Project was started on 11-11-2021
 
