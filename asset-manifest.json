@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/streamelements-store-manager/static/css/main.aea6034d.chunk.css",
-    "main.js": "/streamelements-store-manager/static/js/main.29a53384.chunk.js",
-    "main.js.map": "/streamelements-store-manager/static/js/main.29a53384.chunk.js.map",
+    "main.css": "/streamelements-store-manager/static/css/main.4e64caa1.chunk.css",
+    "main.js": "/streamelements-store-manager/static/js/main.8c93c41d.chunk.js",
+    "main.js.map": "/streamelements-store-manager/static/js/main.8c93c41d.chunk.js.map",
     "runtime-main.js": "/streamelements-store-manager/static/js/runtime-main.9a13f98e.js",
     "runtime-main.js.map": "/streamelements-store-manager/static/js/runtime-main.9a13f98e.js.map",
     "static/css/2.25f1cd1f.chunk.css": "/streamelements-store-manager/static/css/2.25f1cd1f.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.6de9a835.chunk.js.map": "/streamelements-store-manager/static/js/3.6de9a835.chunk.js.map",
     "index.html": "/streamelements-store-manager/index.html",
     "static/css/2.25f1cd1f.chunk.css.map": "/streamelements-store-manager/static/css/2.25f1cd1f.chunk.css.map",
-    "static/css/main.aea6034d.chunk.css.map": "/streamelements-store-manager/static/css/main.aea6034d.chunk.css.map",
+    "static/css/main.4e64caa1.chunk.css.map": "/streamelements-store-manager/static/css/main.4e64caa1.chunk.css.map",
     "static/js/2.2b7db1d4.chunk.js.LICENSE.txt": "/streamelements-store-manager/static/js/2.2b7db1d4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.9a13f98e.js",
     "static/css/2.25f1cd1f.chunk.css",
     "static/js/2.2b7db1d4.chunk.js",
-    "static/css/main.aea6034d.chunk.css",
-    "static/js/main.29a53384.chunk.js"
+    "static/css/main.4e64caa1.chunk.css",
+    "static/js/main.8c93c41d.chunk.js"
   ]
 }
