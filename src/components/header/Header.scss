@@ -6,7 +6,8 @@
   padding: 20px;
   height: 60px;
   width: 100%;
-  background-color: var(--color-background-alt);
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
 
   .title {
     h1 {
@@ -14,15 +15,16 @@
       font-size: var(--font-size-l);
       color: var(--color-text);
       font-weight: var(--font-weight-bold);
+      color: var(--color-white);
     }
   }
 
   &.guest-mode {
-    color: #fff;
-    background-color: var(--color-primary-dark);
+    color: var(--color-text);
+    background-color: var(--color-background-alt);
 
     .title h1 {
-      color: #fff;
+      color: var(--color-text);
     }
   }
 
