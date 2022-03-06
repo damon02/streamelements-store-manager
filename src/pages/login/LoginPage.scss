@@ -14,7 +14,8 @@
 
   .content-split {
     display: flex;
-    width: 80%;
+    width: 100%;
+    max-width: 1200px;
     align-items: flex-start;
     justify-content: center;
 
@@ -22,7 +23,8 @@
       background-color: var(--color-background-alt-dark);
       border-radius: var(--border-radius-base);
       padding: 20px;
-      margin-right: 40px;
+      margin-right: 20px;
+      margin-left: 20px;
 
       &:last-of-type {
         margin-right: unset;
@@ -146,5 +148,49 @@
     position: absolute;
     bottom: 25px;
     opacity: 0.4;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .login-page {
+    h1 {
+      margin-left: 8px;
+      margin-right: 8px;
+      margin-top: 32px;
+      text-align: center;
+    }
+    .content-split {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .block {
+        margin-bottom: 32px;
+      }
+    }
+
+    .copy {
+      position: unset;
+      margin-bottom: 32px;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .login-page {
+    .guest-input {
+      flex-direction: column;
+
+      input {
+        max-width: unset;
+      }
+
+      button {
+        max-width: unset;
+        margin: unset;
+        margin-top: 8px;
+        width: 100%;
+      }
+    }
   }
 }

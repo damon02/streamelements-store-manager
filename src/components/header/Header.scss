@@ -113,3 +113,11 @@
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .header-app {
+    .title h1 {
+      font-size: var(--font-size-s);
+    }
+  }
+}

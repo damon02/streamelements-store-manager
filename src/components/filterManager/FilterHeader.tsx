@@ -36,7 +36,7 @@ const FilterHeader = ({
   setMaxSeconds
 }: IProps) => (
   <div className="filter-header">
-    <div className="filter-item">
+    <div className="filter-item search">
       <h3>Search</h3>
       <input
         placeholder="Search by sound name"
@@ -44,7 +44,7 @@ const FilterHeader = ({
         onChange={e => setQuery(e.target.value)}
       />
     </div>
-    <div className="filter-item">
+    <div className="filter-item cost">
       <h3>Cost</h3>
       <div className="flex">
         <input
@@ -67,7 +67,7 @@ const FilterHeader = ({
         />
       </div>
     </div>
-    <div className="filter-item">
+    <div className="filter-item volume">
       <h3>Volume</h3>
       <div className="flex">
         <input
@@ -90,7 +90,7 @@ const FilterHeader = ({
         />
       </div>
     </div>
-    <div className="filter-item">
+    <div className="filter-item duration">
       <h3>Duration</h3>
       <div className="flex">
         <input

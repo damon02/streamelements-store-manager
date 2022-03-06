@@ -106,7 +106,7 @@ const ItemList = ({
                 }`}
               />
             </th>
-            <th className="age center clickable" onClick={() => handleSort('dateCreated')}>
+            <th className="dateCreated center clickable" onClick={() => handleSort('dateCreated')}>
               Date created
               <i
                 className={`fas fa-sort${
@@ -143,7 +143,7 @@ const ItemList = ({
             <>
               <div className="buttons-pages">
                 <button
-                  className="button primary small"
+                  className="button first-page primary small"
                   type="button"
                   onClick={() => setPage(1)}
                   disabled={page === 1}
@@ -157,7 +157,7 @@ const ItemList = ({
                   disabled={page === 1}
                 >
                   <i className="icon fas fa-angle-left" />
-                  Previous page
+                  <span className="text">Previous page</span>
                 </button>
                 <div className="page-summary">
                   <div className="page-number">
@@ -173,10 +173,10 @@ const ItemList = ({
                   disabled={page === lastPage}
                 >
                   <i className="icon fas fa-angle-right" />
-                  Next page
+                  <span className="text">Next page</span>
                 </button>
                 <button
-                  className="button primary small"
+                  className="button last-page primary small"
                   type="button"
                   onClick={() => setPage(lastPage)}
                   disabled={page === lastPage}

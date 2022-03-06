@@ -1,5 +1,6 @@
 .filter-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 
   input[type='number'] {
@@ -28,6 +29,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .filter-header {
+    .filter-item {
+      max-width: unset;
+      width: 100%;
+      margin: unset;
+
+      &.cost,
+      &.volume,
+      &.duration {
+        display: none;
+      }
+
+      h3 {
+        display: none;
+      }
+
+      input {
+        max-width: unset;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .filter-header {
+    .filter-item {
+      padding: 12px;
     }
   }
 }
