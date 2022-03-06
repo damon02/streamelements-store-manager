@@ -18,9 +18,18 @@ interface IProps {
   sort: { sort: TableSortType; order: 'asc' | 'desc' }
   setSort: (sort: { sort: TableSortType; order: 'asc' | 'desc' }) => void
   resetFilters: () => void
+  guestUsername: string | null
 }
 
-const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IProps) => {
+const ItemList = ({
+  allItems,
+  items,
+  setItems,
+  sort,
+  setSort,
+  resetFilters,
+  guestUsername
+}: IProps) => {
   const navigate = useNavigate()
   const { height } = useWindowSize()
   const previousItemLength = usePrevious(items.length)
@@ -105,12 +114,14 @@ const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IP
                 }`}
               />
             </th>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <th className="download" />
           </tr>
         </thead>
         <tbody>
           {(showAll ? items : items.slice((page - 1) * itemsPerPage, page * itemsPerPage)).map(
             i => (
-              <ItemRow item={i} key={i._id} setItem={handleSetItem} />
+              <ItemRow item={i} key={i._id} guestUsername={guestUsername} />
             )
           )}
         </tbody>
@@ -173,22 +184,25 @@ const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IP
                   <i className="icon fas fa-angle-double-right" />
                 </button>
               </div>
-
-              <button
-                className="button secondary small showAll"
-                type="button"
-                onClick={() => setShowAll(true)}
-              >
-                Show all
-              </button>
-              <button
-                className="button primary small with-icon-margin showAll"
-                type="button"
-                onClick={() => navigate(`item/new`)}
-              >
-                <i className="icon fas fa-plus" />
-                Add new sound
-              </button>
+              {!guestUsername && (
+                <button
+                  className="button secondary small showAll"
+                  type="button"
+                  onClick={() => setShowAll(true)}
+                >
+                  Show all (slow)
+                </button>
+              )}
+              {!guestUsername && (
+                <button
+                  className="button primary small with-icon-margin showAll"
+                  type="button"
+                  onClick={() => navigate(`item/new`)}
+                >
+                  <i className="icon fas fa-plus" />
+                  Add new sound
+                </button>
+              )}
             </>
           ) : (
             <button
@@ -214,17 +228,6 @@ const ItemList = ({ allItems, items, setItems, sort, setSort, resetFilters }: IP
       sort: key,
       order: sort.sort === key ? (sort.order === 'asc' ? 'desc' : 'asc') : 'asc'
     })
-  }
-
-  function handleSetItem(item: EditedChannelItem) {
-    const index = allItems.findIndex(x => x._id === item._id)
-
-    if (index) {
-      const newx = [...allItems]
-      newx[index] = item
-
-      setItems(newx)
-    }
   }
 
   function handlePageClick(method: 'previous' | 'next') {

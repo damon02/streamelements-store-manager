@@ -17,7 +17,7 @@ import DeletePrompt from './DeletePrompt'
 
 const ItemDetails = () => {
   const navigate = useNavigate()
-  const { APIService, user } = useAuth()
+  const { APIService, user, guestUsername } = useAuth()
   const { itemId } = useParams()
   const { items, files, setItem, reloadItems } = useItems()
   const [saving, setSaving] = useState(false)
@@ -84,6 +84,13 @@ const ItemDetails = () => {
 
   const ref = React.useRef<HTMLDivElement>(null)
   useOnClickOutside(ref, showDeletePrompt ? () => ({}) : handleCloseDetails)
+
+  useEffect(() => {
+    if (guestUsername) {
+      handleCloseDetails()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (item) {

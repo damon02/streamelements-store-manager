@@ -9,11 +9,12 @@ import './Header.scss'
 interface IProps {
   user?: StreamElements.Channel
   loading: boolean
+  guestUsername: string | null
   logout: () => void
   allItems: EditedChannelItem[]
 }
 
-const Header = ({ user, loading, logout, allItems }: IProps) => {
+const Header = ({ user, loading, guestUsername, logout, allItems }: IProps) => {
   const [showMenu, setShowMenu] = React.useState<boolean>(false)
 
   const username = user?.displayName
@@ -27,9 +28,10 @@ const Header = ({ user, loading, logout, allItems }: IProps) => {
   })
 
   return (
-    <div className="header-app">
+    <div className={`header-app${guestUsername ? ' guest-mode' : ''}`}>
       <div className="title">
         <h1>StreamElements Sounds editor</h1>
+        {guestUsername && <div className="guest">Guest mode</div>}
       </div>
       <div className="buttons">
         <div
@@ -41,6 +43,11 @@ const Header = ({ user, loading, logout, allItems }: IProps) => {
         >
           <div className="user-image" style={{ backgroundImage: `url(${user?.avatar})` }} />
           <div className="name">{username || <i className="fas fa-spin fa-spinner" />}</div>
+          {user?.isPartner ? (
+            <div className="partner-badge">
+              <i className="fas fa-check" />
+            </div>
+          ) : null}
           <div className="triangle">
             <i className="fas fa-caret-down" />
           </div>

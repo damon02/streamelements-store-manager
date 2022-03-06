@@ -8,10 +8,10 @@ import { usePrevious } from '../../hooks/usePrevious'
 
 interface IProps {
   item: EditedChannelItem
-  setItem: (item: EditedChannelItem) => void
+  guestUsername: string | null
 }
 
-const ItemRow = ({ item, setItem }: IProps) => {
+const ItemRow = ({ item, guestUsername }: IProps) => {
   const navigate = useNavigate()
   const [hasCopiedToClipboard, setHasCopied] = React.useState(false)
 
@@ -87,7 +87,13 @@ const ItemRow = ({ item, setItem }: IProps) => {
     <tr
       className={`item${!item.enabled ? ' disabled' : ''}`}
       key={item._id}
-      onClick={() => navigate(`item/${item._id}`)}
+      onClick={() => {
+        if (!guestUsername) {
+          navigate(`item/${item._id}`)
+        } else {
+          play()
+        }
+      }}
     >
       <td className="play">
         <div
@@ -181,6 +187,31 @@ const ItemRow = ({ item, setItem }: IProps) => {
       </td>
       <td className="dateCreated center">
         {item.createdAt && format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')}
+      </td>
+      <td className="download">
+        <div
+          className="inline-button"
+          role="button"
+          tabIndex={0}
+          onKeyPress={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            if (e.key === 'ENTER') {
+              if (item.alert?.audio?.src) {
+                window.open(item.alert.audio.src)
+              }
+            }
+          }}
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            if (item.alert?.audio?.src) {
+              window.open(item.alert.audio.src)
+            }
+          }}
+        >
+          <i className="fas fa-download" />
+        </div>
       </td>
     </tr>
   )

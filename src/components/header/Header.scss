@@ -17,6 +17,15 @@
     }
   }
 
+  &.guest-mode {
+    color: #fff;
+    background-color: var(--color-primary-dark);
+
+    .title h1 {
+      color: #fff;
+    }
+  }
+
   .buttons {
     .button-user {
       display: flex;
@@ -26,7 +35,26 @@
 
       .name {
         font-size: var(--font-size-l);
+        font-weight: 600;
         margin-left: 10px;
+      }
+
+      .partner-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--color-primary);
+        color: #fff;
+        border-radius: 50%;
+        margin-left: 6px;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        font-size: 11px;
+
+        i {
+          margin: unset;
+        }
       }
 
       .triangle {

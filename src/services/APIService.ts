@@ -5,6 +5,7 @@ import { EditedChannelItem, StreamElements } from '../@types/types'
 export interface APIServiceProps {
   getMeDetails: () => Promise<StreamElements.Channel>
   getCurrentUserChannel: () => Promise<StreamElements.Channel>
+  getUserChannelFromUserName: (username: string) => Promise<StreamElements.Channel>
   getChannelItems: (channelId: string) => Promise<StreamElements.ChannelItem[]>
   saveChannelItem: (
     channelId: string,
@@ -27,23 +28,34 @@ export interface APIServiceProps {
   ) => Promise<StreamElements.UploadedFile>
 }
 
-const APIService = (token: string): APIServiceProps => ({
+const APIService = (token: string | undefined): APIServiceProps => ({
   getCurrentUserChannel: (): Promise<StreamElements.Channel> => {
     const options: RequestInit = {
       method: 'GET',
-      headers: {
-        Authorization: token
-      }
+      headers: !token
+        ? undefined
+        : {
+            Authorization: token
+          }
     }
 
     return fetchAPI(`${BASE_URL}/v2/users/current`, options)
   },
+  getUserChannelFromUserName: (username: string): Promise<StreamElements.Channel> => {
+    const options: RequestInit = {
+      method: 'GET'
+    }
+
+    return fetchAPI(`${BASE_URL}/v2/channels/${username}`, options)
+  },
   getMeDetails: (): Promise<StreamElements.Channel> => {
     const options: RequestInit = {
       method: 'GET',
-      headers: {
-        Authorization: token
-      }
+      headers: !token
+        ? undefined
+        : {
+            Authorization: token
+          }
     }
 
     return fetchAPI(`${BASE_URL}/v2/channels/me`, options)
@@ -55,9 +67,11 @@ const APIService = (token: string): APIServiceProps => ({
   ): Promise<StreamElements.ChannelItem[]> => {
     const options: RequestInit = {
       method: 'GET',
-      headers: {
-        Authorization: token
-      }
+      headers: !token
+        ? undefined
+        : {
+            Authorization: token
+          }
     }
 
     const query = objectToQueryString({ limit, offset })
@@ -68,6 +82,10 @@ const APIService = (token: string): APIServiceProps => ({
     channelId: string,
     item: EditedChannelItem
   ): Promise<StreamElements.ChannelItem> => {
+    if (!token) {
+      throw new Error('API call only allowed when not a guest')
+    }
+
     const options: RequestInit = {
       method: 'PUT',
       headers: {
@@ -83,6 +101,10 @@ const APIService = (token: string): APIServiceProps => ({
     channelId: string,
     item: EditedChannelItem
   ): Promise<StreamElements.ChannelItem> => {
+    if (!token) {
+      throw new Error('API call only allowed when not a guest')
+    }
+
     const options: RequestInit = {
       method: 'POST',
       headers: {
@@ -95,6 +117,10 @@ const APIService = (token: string): APIServiceProps => ({
     return fetchAPI(`${BASE_URL}/v2/store/${channelId}/items`, options)
   },
   deleteChannelItem: (channelId: string, itemId: string): Promise<void> => {
+    if (!token) {
+      throw new Error('API call only allowed when not a guest')
+    }
+
     const options: RequestInit = {
       method: 'DELETE',
       headers: {
@@ -109,6 +135,10 @@ const APIService = (token: string): APIServiceProps => ({
     limit?: number,
     offset?: number
   ): Promise<StreamElements.UploadResponse> => {
+    if (!token) {
+      throw new Error('API call only allowed when not a guest')
+    }
+
     const options: RequestInit = {
       method: 'GET',
       headers: {
@@ -125,6 +155,10 @@ const APIService = (token: string): APIServiceProps => ({
     file: Blob,
     fileName?: string
   ): Promise<StreamElements.UploadedFile> => {
+    if (!token) {
+      throw new Error('API call only allowed when not a guest')
+    }
+
     const formData = new FormData()
     formData.append('file', file, fileName)
 

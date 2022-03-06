@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const auth = useAuth()
   const location = useLocation()
 
-  if (!auth?.token) {
+  if (!auth?.token && !auth.guestUsername) {
     return <Navigate to="/login" state={{ from: location }} />
   }
 

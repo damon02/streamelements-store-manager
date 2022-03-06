@@ -6,7 +6,6 @@ import FilterHeader from './FilterHeader'
 
 interface IProps {
   items: EditedChannelItem[]
-  setItems: (items: EditedChannelItem[]) => void
   children: (
     FiltersComponent: React.ReactNode,
     processedItems: EditedChannelItem[],
@@ -16,7 +15,7 @@ interface IProps {
   ) => React.ReactNode
 }
 
-const FilterManager = ({ items, setItems, children }: IProps) => {
+const FilterManager = ({ items, children }: IProps) => {
   const [query, setQuery] = useLocalStorage<string>('query', '')
   const [minVolume, setMinVolume] = useLocalStorage<number | undefined>('minVolume', undefined)
   const [maxVolume, setMaxVolume] = useLocalStorage<number | undefined>('maxVolume', undefined)

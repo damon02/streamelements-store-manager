@@ -8,6 +8,8 @@ interface AuthContextType {
   setUser: (user: StreamElements.Channel) => void
   token: string | null
   setToken: (token: string | null) => void
+  guestUsername: string | null
+  setGuestUsername: (id: string | null) => void
   APIService: APIServiceProps | null
 }
 
@@ -15,11 +17,27 @@ const AuthContext = React.createContext<AuthContextType>(null!)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<StreamElements.Channel>()
+  const [guestUsername, setGuestUsername] = useLocalStorage<string | null>(
+    'StreamElementsGuestUsername',
+    null
+  )
   const [token, setToken] = useLocalStorage<string | null>('StreamElementsJWT', null)
 
-  const tokenizedAPIService = token ? APIService(`Bearer ${token}`) : null
+  const tokenizedAPIService = token
+    ? APIService(`Bearer ${token}`)
+    : guestUsername
+    ? APIService(undefined)
+    : null
 
-  const value = { user, setUser, token, setToken, APIService: tokenizedAPIService }
+  const value = {
+    user,
+    setUser,
+    token,
+    setToken,
+    guestUsername,
+    setGuestUsername,
+    APIService: tokenizedAPIService
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

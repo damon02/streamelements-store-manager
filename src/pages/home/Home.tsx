@@ -7,18 +7,23 @@ import FilterManager from '../../components/filterManager/FilterManager'
 
 import { EditedChannelItem, StreamElements } from '../../@types/types'
 import { useAuth } from '../../hooks/useAuth'
-
-import './Home.scss'
 import { loadFromLocalStorage, saveToLocalStorage } from '../../utils/localStorage'
 
+import './Home.scss'
+
 const Home = () => {
-  const { user, setUser, APIService, setToken } = useAuth()
+  const { user, setUser, APIService, token, setToken, guestUsername, setGuestUsername } = useAuth()
   const [items, setItems] = useState<EditedChannelItem[]>([])
   const [files, setFiles] = useState<StreamElements.UploadedFile[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const memoizedFetchUserDetails = useCallback(fetchUserDetails, [APIService, setUser])
-  const memoizedFetchChannelItems = useCallback(fetchUserStoreItems, [APIService])
+  const memoizedFetchUserDetails = useCallback(fetchUserDetails, [
+    APIService,
+    setUser,
+    token,
+    guestUsername
+  ])
+  const memoizedFetchChannelItems = useCallback(fetchUserStoreItems, [APIService, guestUsername])
   const memoizedFetchAllFileDetails = useCallback(fetchAllFileDetails, [APIService])
 
   useEffect(() => {
@@ -38,9 +43,18 @@ const Home = () => {
   return (
     <>
       <div className="home">
-        <Header allItems={items} user={user} loading={loading} logout={() => setToken(null)} />
+        <Header
+          allItems={items}
+          user={user}
+          loading={loading}
+          guestUsername={guestUsername}
+          logout={() => {
+            setToken(null)
+            setGuestUsername(null)
+          }}
+        />
         <div className="content">
-          <FilterManager items={items} setItems={setItems}>
+          <FilterManager items={items}>
             {(FiltersComponent, processedItems, sort, setSort, resetFilters) => (
               <>
                 {FiltersComponent}
@@ -51,6 +65,7 @@ const Home = () => {
                   sort={sort}
                   setSort={setSort}
                   resetFilters={resetFilters}
+                  guestUsername={guestUsername}
                 />
               </>
             )}
@@ -76,7 +91,10 @@ const Home = () => {
     if (APIService) {
       try {
         setLoading(true)
-        const channel = await APIService?.getMeDetails()
+        const channel = token
+          ? await APIService?.getMeDetails()
+          : await APIService.getUserChannelFromUserName(guestUsername || '')
+
         setUser(channel)
       } catch (error) {
         console.error(error)
@@ -91,8 +109,9 @@ const Home = () => {
       try {
         setLoading(true)
         const channelItems = await APIService?.getChannelItems(channelId)
-
-        const filteredItems = channelItems as EditedChannelItem[]
+        const filteredItems = channelItems.filter(i =>
+          guestUsername ? i.enabled && i.alert?.audio?.src : i
+        ) as EditedChannelItem[]
 
         // Fetch previously saved file durations
         const key = `DURATIONS-${channelId}`
