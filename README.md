@@ -17,7 +17,8 @@ There are essentially 2 authentication levels in this project, consisting of a G
 
 The editor suite contains all the fields that are visible inside the regular StreamElements website.
 
-![image](https://user-images.githubusercontent.com/14293142/156943651-176dbf8b-3e99-4b19-8af8-035f5fd0ae65.png)
+<img width="1558" alt="Schermafbeelding 2022-03-07 om 11 50 25" src="https://user-images.githubusercontent.com/14293142/157017340-683388d7-d6a3-44d3-b82e-eabfcfcd8fe4.png">
+
 
 ## Hotlink to your own stream directory
 If you by any chance also manage a lot of sound effects via StreamElements and want to give your viewers a way to easily view these, you can hotlink your channel by linking it as such:
