@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { animated, useSpring } from 'react-spring'
 import { easeQuadInOut } from 'd3-ease'
-import { format } from 'date-fns'
+import { saveAs } from 'file-saver'
+import JSZip from 'jszip'
 
-import { EditedChannelItem, StreamElements } from '../../@types/types'
-import './Header.scss'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { EditedChannelItem, StreamElements } from '../../@types/types'
+
+import './Header.scss'
 
 interface IProps {
   user?: StreamElements.Channel
@@ -83,23 +85,26 @@ const Header = ({ user, loading, guestUsername, logout, allItems }: IProps) => {
     </div>
   )
 
-  function copyToClipboardCSV() {
-    const text = `Command;Name;Description;Cost;Date added\n${allItems
-      .filter(i => i.enabled)
-      .map(
-        item =>
-          `${item.bot?.identifier};${item.name || '<empty name>'};${
-            item.description || '<empty description>'
-          };${item.cost || 0};${
-            item.createdAt
-              ? format(new Date(item.createdAt), 'dd-MM-yyyy HH:mm:ss')
-              : '<empty createdAt>'
-          };`
-      )
-      .join('\n')}`
+  async function copyToClipboardCSV() {
+    const urlNameMap = allItems.map(i => ({
+      name: i.bot?.identifier || 'null',
+      url: i.alert?.audio?.src || ''
+    }))
+    const zip = new JSZip()
 
-    navigator.clipboard.writeText(text)
-    setShowMenu(false)
+    await Promise.all(urlNameMap.map(x => downloadAsBlob(zip, x.name, x.url)))
+
+    zip.generateAsync({ type: 'blob' }).then(c => saveAs(c, 'sounds.zip'))
+  }
+
+  async function downloadAsBlob(zipFile: JSZip, name: string, url: string) {
+    try {
+      const fileType = url.split('.').reverse()[0]
+      const blob = await (await fetch(url)).blob()
+      zipFile.file(`${name}.${fileType}`, blob)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
